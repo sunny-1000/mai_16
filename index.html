@@ -1,0 +1,3123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mailee's Sweet 16 — The Shadow Obby 🦇🎂</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Fredoka:wght@400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    :root {
+      --bg-void: #07050d;
+      --bg-card: #130d21;
+      --bg-panel: rgba(20, 12, 36, 0.92);
+      --purple-deep: #4c1d95;
+      --purple-neon: #a855f7;
+      --purple-glow: #c084fc;
+      --kuromi-pink: #f43f8e;
+      --haikyu-orange: #fb923c;
+      --roblox-green: #00b06f;
+      --roblox-green-hover: #00cf83;
+      --text-main: #f5f0ff;
+      --text-dim: #b8a5d6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 20%, #1c0f33 0%, #090512 65%, #040208 100%);
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+    }
+
+    /* ================= BLOQUEO ESTRICTO PARA CELULARES ================= */
+    #mobile-blocker {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: radial-gradient(circle at center, #1e0f38 0%, #07040c 80%);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 28px;
+    }
+
+    #mobile-blocker.active {
+      display: flex;
+    }
+
+    .blocker-card {
+      max-width: 440px;
+      background: rgba(18, 11, 32, 0.95);
+      border: 2px solid var(--purple-neon);
+      border-radius: 22px;
+      padding: 32px 24px;
+      box-shadow: 0 0 45px rgba(168, 85, 247, 0.35), inset 0 0 20px rgba(244, 63, 142, 0.12);
+      animation: floatCard 3.5s ease-in-out infinite;
+    }
+
+    .blocker-badge {
+      display: inline-block;
+      background: rgba(244, 63, 142, 0.18);
+      border: 1px solid var(--kuromi-pink);
+      color: #ff9ec9;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    .blocker-icon {
+      font-size: 56px;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 0 14px rgba(192, 132, 252, 0.7));
+    }
+
+    .blocker-card h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 24px;
+      color: var(--purple-glow);
+      margin-bottom: 12px;
+    }
+
+    .blocker-card p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-dim);
+      margin-bottom: 14px;
+    }
+
+    .blocker-card strong {
+      color: #fff;
+    }
+
+    .blocker-tip {
+      margin-top: 16px;
+      padding: 12px;
+      background: rgba(168, 85, 247, 0.12);
+      border-radius: 12px;
+      font-size: 13px;
+      color: #e9d5ff;
+      border: 1px dashed rgba(192, 132, 252, 0.4);
+    }
+
+    /* ================= HUD ESTILO ROBLOX GÓTICO ================= */
+    #top-hud {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 58px;
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(180deg, rgba(11, 7, 20, 0.94), rgba(11, 7, 20, 0.55));
+      border-bottom: 1px solid rgba(168, 85, 247, 0.28);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+
+    .hud-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .roblox-logo-box {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #2b124c, #7e22ce);
+      border: 2px solid var(--purple-glow);
+      border-radius: 8px;
+      transform: rotate(12deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.55);
+    }
+
+    .roblox-logo-inner {
+      width: 11px;
+      height: 11px;
+      background: var(--kuromi-pink);
+      border-radius: 2px;
+    }
+
+    .player-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(192, 132, 252, 0.25);
+      padding: 5px 14px 5px 8px;
+      border-radius: 999px;
+    }
+
+    .player-avatar-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1e1135, #581c87);
+      border: 2px solid var(--kuromi-pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    .player-name {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .player-tag {
+      font-size: 11px;
+      background: var(--kuromi-pink);
+      color: #fff;
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    .hud-center {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .level-step {
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-dim);
+      transition: all 0.3s ease;
+    }
+
+    .level-step.active {
+      background: rgba(168, 85, 247, 0.28);
+      border-color: var(--purple-glow);
+      color: #fff;
+      box-shadow: 0 0 14px rgba(168, 85, 247, 0.45);
+    }
+
+    .level-step.done {
+      background: rgba(0, 176, 111, 0.2);
+      border-color: var(--roblox-green);
+      color: #86efac;
+    }
+
+    .hud-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hud-btn {
+      background: rgba(168, 85, 247, 0.16);
+      border: 1px solid rgba(192, 132, 252, 0.4);
+      color: #f5f0ff;
+      padding: 7px 13px;
+      border-radius: 10px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .hud-btn:hover {
+      background: rgba(168, 85, 247, 0.32);
+      transform: translateY(-1px);
+    }
+
+    /* ================= PANTALLAS PRINCIPALES ================= */
+    .screen {
+      position: fixed;
+      inset: 58px 0 0 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 18px;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    /* Fondo animado del lobby */
+    #bg-lobby-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ================= LOBBY ESTILO ROBLOX EXPERIENCE ================= */
+    #screen-lobby {
+      z-index: 10;
+    }
+
+    .roblox-exp-card {
+      position: relative;
+      z-index: 5;
+      width: min(920px, 94vw);
+      background: rgba(16, 10, 29, 0.88);
+      border: 2px solid rgba(168, 85, 247, 0.5);
+      border-radius: 24px;
+      padding: 30px;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 28px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.75), 0 0 50px rgba(139, 92, 246, 0.22);
+      backdrop-filter: blur(12px);
+    }
+
+    .exp-thumb {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid rgba(244, 63, 142, 0.45);
+      background: radial-gradient(circle at 50% 35%, #3b1366 0%, #120720 70%, #07030c 100%);
+      min-height: 310px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #lobby-preview-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .exp-thumb-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(9, 5, 18, 0.85);
+      border: 1px solid var(--kuromi-pink);
+      color: #ffd1e6;
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .exp-thumb-date {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(168, 85, 247, 0.85);
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .exp-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .exp-kicker {
+      color: var(--kuromi-pink);
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .exp-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 31px;
+      line-height: 1.15;
+      background: linear-gradient(90deg, #ffffff 0%, #d8b4fe 55%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .exp-creator {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 14px;
+    }
+
+    .exp-creator span {
+      color: var(--purple-glow);
+      font-weight: 700;
+    }
+
+    .exp-desc {
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: #dfd4f5;
+      margin-bottom: 16px;
+    }
+
+    .exp-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .exp-tag {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(192, 132, 252, 0.3);
+      color: #e9d5ff;
+      font-weight: 600;
+    }
+
+    .exp-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      text-align: center;
+    }
+
+    .stat-val {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .roblox-play-btn {
+      width: 100%;
+      padding: 15px 20px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--roblox-green), #059669);
+      color: #fff;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 8px 25px rgba(0, 176, 111, 0.45);
+      transition: transform 0.16s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .roblox-play-btn:hover {
+      background: linear-gradient(135deg, var(--roblox-green-hover), #10b981);
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 12px 32px rgba(0, 207, 131, 0.55);
+    }
+
+    .roblox-play-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* ================= CONTENEDORES DE JUEGO 2D ================= */
+    .game-stage-wrap {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: min(940px, 95vw);
+    }
+
+    .game-banner {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-panel);
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      border-radius: 14px;
+      padding: 10px 18px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    .game-banner-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 18px;
+      color: var(--purple-glow);
+    }
+
+    .game-banner-sub {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .game-metric-pill {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(244, 63, 142, 0.16);
+      border: 1px solid rgba(244, 63, 142, 0.55);
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .canvas-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 900 / 520;
+      max-height: calc(100vh - 205px);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid rgba(168, 85, 247, 0.6);
+      box-shadow: 0 18px 55px rgba(0, 0, 0, 0.8), 0 0 35px rgba(168, 85, 247, 0.25);
+      background: #06040b;
+    }
+
+    .canvas-frame canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .controls-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      font-size: 13px;
+      color: var(--text-dim);
+      background: rgba(15, 9, 28, 0.78);
+      padding: 8px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    kbd {
+      background: #271745;
+      border: 1px solid var(--purple-neon);
+      border-bottom-width: 3px;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Susto tierno del murciélago en nivel 2 */
+    #bat-scare-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      z-index: 30;
+      background: radial-gradient(circle, rgba(244, 63, 142, 0.28), rgba(7, 3, 14, 0.78));
+      transition: opacity 0.14s ease;
+    }
+
+    #bat-scare-overlay.show {
+      opacity: 1;
+    }
+
+    .scare-bat-svg {
+      width: 280px;
+      filter: drop-shadow(0 0 28px #f43f8e);
+      transform: scale(0.4);
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    #bat-scare-overlay.show .scare-bat-svg {
+      transform: scale(1.18);
+    }
+
+    .scare-caption {
+      margin-top: 10px;
+      background: rgba(10, 6, 20, 0.9);
+      border: 1px solid var(--kuromi-pink);
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 16px;
+      color: #ffd1e6;
+      font-weight: 700;
+    }
+
+    /* ================= MODAL ENTRE NIVELES ================= */
+    #intermission-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(5, 2, 12, 0.84);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #intermission-modal.active {
+      display: flex;
+    }
+
+    .modal-box {
+      max-width: 560px;
+      width: 100%;
+      background: linear-gradient(160deg, #1b0e32 0%, #0d0718 100%);
+      border: 2px solid var(--purple-glow);
+      border-radius: 24px;
+      padding: 32px;
+      text-align: center;
+      box-shadow: 0 0 60px rgba(168, 85, 247, 0.42);
+      animation: popIn 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .modal-badge {
+      display: inline-block;
+      background: rgba(0, 176, 111, 0.2);
+      border: 1px solid var(--roblox-green);
+      color: #86efac;
+      font-weight: 800;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .modal-emoji {
+      font-size: 52px;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 16px rgba(244, 63, 142, 0.7));
+    }
+
+    .modal-box h2 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 26px;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+
+    .modal-quote {
+      font-size: 16.5px;
+      line-height: 1.65;
+      color: #eadcff;
+      background: rgba(255, 255, 255, 0.04);
+      border-left: 4px solid var(--kuromi-pink);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 22px;
+      text-align: left;
+    }
+
+    .modal-next-btn {
+      padding: 14px 30px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #9333ea, #ec4899);
+      color: #fff;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(236, 72, 153, 0.4);
+      transition: transform 0.16s ease, box-shadow 0.2s ease;
+    }
+
+    .modal-next-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 12px 32px rgba(236, 72, 153, 0.58);
+    }
+
+    /* ================= NIVEL 3: ESCENARIO 3D PASTEL GÓTICO ================= */
+    #screen-level3 {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #three-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+    }
+
+    #three-container:active {
+      cursor: grabbing;
+    }
+
+    .cake-hud-top {
+      position: absolute;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      text-align: center;
+      pointer-events: none;
+      background: rgba(12, 7, 24, 0.76);
+      border: 1px solid rgba(192, 132, 252, 0.45);
+      padding: 10px 26px;
+      border-radius: 18px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .cake-hud-top h2 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 22px;
+      background: linear-gradient(90deg, #fff, #e879f9, #f43f8e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 3px;
+    }
+
+    .cake-hud-top p {
+      font-size: 13.5px;
+      color: #e9d5ff;
+    }
+
+    .cake-hud-bottom {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(12, 7, 24, 0.82);
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      padding: 10px 18px;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+    }
+
+    .candles-counter {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #fde68a;
+      padding: 0 8px;
+    }
+
+    .cake-action-btn {
+      padding: 9px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(244, 63, 142, 0.65);
+      background: linear-gradient(135deg, #6b21a8, #db2777);
+      color: #fff;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .cake-action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 18px rgba(244, 63, 142, 0.6);
+    }
+
+    .cake-action-btn.secondary {
+      background: rgba(168, 85, 247, 0.2);
+      border-color: rgba(192, 132, 252, 0.5);
+    }
+
+    /* ================= TARJETA FINAL DE CUMPLEAÑOS ================= */
+    #birthday-card-overlay {
+      display: none;
+      position: fixed;
+      inset: 58px 0 0 0;
+      z-index: 400;
+      background: rgba(5, 2, 12, 0.72);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    #birthday-card-overlay.active {
+      display: flex;
+    }
+
+    .final-card {
+      position: relative;
+      max-width: 610px;
+      width: 100%;
+      background: linear-gradient(155deg, rgba(28, 13, 52, 0.97) 0%, rgba(11, 6, 22, 0.98) 100%);
+      border: 2px solid var(--kuromi-pink);
+      border-radius: 26px;
+      padding: 34px 36px;
+      text-align: center;
+      box-shadow: 0 0 70px rgba(244, 63, 142, 0.35), 0 0 40px rgba(168, 85, 247, 0.35);
+      animation: popIn 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .final-card-close {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #fff;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .final-card-close:hover {
+      background: rgba(244, 63, 142, 0.35);
+    }
+
+    .card-date-pill {
+      display: inline-block;
+      background: rgba(244, 63, 142, 0.2);
+      border: 1px solid var(--kuromi-pink);
+      color: #fbcfe8;
+      padding: 5px 15px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      margin-bottom: 12px;
+    }
+
+    .final-card h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 32px;
+      background: linear-gradient(90deg, #ffffff, #e879f9, #fb7185);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+
+    .final-card-body {
+      font-size: 16px;
+      line-height: 1.72;
+      color: #efe6ff;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(192, 132, 252, 0.25);
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin-bottom: 20px;
+    }
+
+    .final-card-body p + p {
+      margin-top: 12px;
+    }
+
+    .card-signature {
+      text-align: right;
+      margin-top: 16px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 17px;
+      color: var(--purple-glow);
+      font-weight: 700;
+    }
+
+    .card-signature span {
+      display: block;
+      font-size: 20px;
+      color: var(--kuromi-pink);
+      margin-top: 2px;
+    }
+
+    .final-card-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-7px); }
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.86) translateY(16px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= PANTALLA DE BLOQUEO MÓVIL ================= -->
+  <div id="mobile-blocker">
+    <div class="blocker-card">
+      <div class="blocker-badge">Acceso exclusivo de PC</div>
+      <div class="blocker-icon">🦇💻🖤</div>
+      <h1>¡Alto ahí, Mailee!</h1>
+      <p>
+        Esta experiencia secreta de cumpleaños (con niveles jugables y sorpresa gótica en <strong>3D</strong>) está diseñada únicamente para <strong>computadora o laptop</strong>.
+      </p>
+      <p>
+        No puedes pasar desde el celular... ¡pero vale totalmente la pena!
+      </p>
+      <div class="blocker-tip">
+        ✨ <strong>Instrucción:</strong> Abre este mismo enlace en una computadora (PC o laptop) para desbloquear tu aventura de 16 años.
+      </div>
+    </div>
+  </div>
+
+  <!-- FONDO ATMOSFÉRICO GLOBAL -->
+  <canvas id="bg-lobby-canvas"></canvas>
+
+  <!-- ================= BARRA SUPERIOR ESTILO ROBLOX ================= -->
+  <header id="top-hud">
+    <div class="hud-left">
+      <div class="roblox-logo-box" title="Mailee's Sweet 16">
+        <div class="roblox-logo-inner"></div>
+      </div>
+      <div class="player-pill">
+        <div class="player-avatar-dot">😈</div>
+        <span class="player-name">Mailee</span>
+        <span class="player-tag">LVL 16</span>
+      </div>
+    </div>
+
+    <div class="hud-center">
+      <div class="level-step" id="step-1">🏐 Nivel 1: Cancha Nocturna</div>
+      <div class="level-step" id="step-2">⚡ Nivel 2: Laberinto Gótico</div>
+      <div class="level-step" id="step-3">🎂 Nivel 3: Santuario 3D</div>
+    </div>
+
+    <div class="hud-right">
+      <button class="hud-btn" id="btn-mute">🔊 Sonido: ON</button>
+    </div>
+  </header>
+
+  <!-- ================= PANTALLA 0: LOBBY ESTILO ROBLOX ================= -->
+  <main id="screen-lobby" class="screen active">
+    <div class="roblox-exp-card">
+      <div class="exp-thumb">
+        <canvas id="lobby-preview-canvas" width="440" height="320"></canvas>
+        <div class="exp-thumb-badge">🦇 EDICIÓN ESPECIAL • SWEET 16</div>
+        <div class="exp-thumb-date">24 DE NOVIEMBRE</div>
+      </div>
+
+      <div class="exp-info">
+        <div>
+          <div class="exp-kicker">Roblox Gothic Birthday Experience</div>
+          <h1 class="exp-title">Mailee's Sweet 16: Shadow Obby</h1>
+          <div class="exp-creator">Creado por <span>El terror de roblox</span></div>
+          <p class="exp-desc">
+            Bienvenida, <strong>Mailee</strong>. Alguien escondió tu pastel de cumpleaños al final de un desafío nocturno lleno de vóley, relámpagos, murciélagos y vibra gótica. Supera los dos desafíos en la oscuridad para desbloquear tu sorpresa final en <strong>3D</strong>.
+          </p>
+
+          <div class="exp-tags">
+            <span class="exp-tag">🖤 Estilo Gótico</span>
+            <span class="exp-tag">🎀 Vibra Kuromi</span>
+            <span class="exp-tag">🏐 Vóley x Haikyu!!</span>
+            <span class="exp-tag">⚡ Suspenso Suave</span>
+          </div>
+
+          <div class="exp-stats">
+            <div>
+              <div class="stat-val">16 Años</div>
+              <div class="stat-lbl">Nivel Desbloqueado</div>
+            </div>
+            <div>
+              <div class="stat-val">3 Fases</div>
+              <div class="stat-lbl">2D + Final 3D</div>
+            </div>
+            <div>
+              <div class="stat-val">100% VIP</div>
+              <div class="stat-lbl">Solo para Mailee</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="roblox-play-btn" id="btn-start-game">
+          ▶ JUGAR AVENTURA
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= NIVEL 1: CANCHA NOCTURNA (VÓLEY x HAIKYU!!) ================= -->
+  <section id="screen-level1" class="screen">
+    <div class="game-stage-wrap">
+      <div class="game-banner">
+        <div>
+          <div class="game-banner-title">Nivel 1: La Cancha de los Cuervos Nocturnos</div>
+          <div class="game-banner-sub">¡Remata o recibe 10 balones neón bajo la tormenta para abrir el portón!</div>
+        </div>
+        <div class="game-metric-pill">
+          🏐 <span id="l1-score">0</span> / 10
+        </div>
+      </div>
+
+      <div class="canvas-frame">
+        <canvas id="canvas-level1" width="900" height="520"></canvas>
+      </div>
+
+      <div class="controls-bar">
+        <span>Moverse: <kbd>A</kbd> <kbd>D</kbd> o <kbd>←</kbd> <kbd>→</kbd></span>
+        <span>Saltar y Rematar: <kbd>W</kbd> / <kbd>↑</kbd> / <kbd>Espacio</kbd></span>
+        <span>Tip: ¡Salta para hacer un súper remate estilo Haikyu!!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NIVEL 2: LABERINTO DE LOS RELÁMPAGOS ================= -->
+  <section id="screen-level2" class="screen">
+    <div class="game-stage-wrap">
+      <div class="game-banner">
+        <div>
+          <div class="game-banner-title">Nivel 2: El Laberinto de los Relámpagos</div>
+          <div class="game-banner-sub">Aprovecha cada rayo para ver el camino, junta las 4 reliquias de Kuromi y llega al portal.</div>
+        </div>
+        <div class="game-metric-pill">
+          🎀 <span id="l2-relics">0</span> / 4
+        </div>
+      </div>
+
+      <div class="canvas-frame">
+        <canvas id="canvas-level2" width="900" height="520"></canvas>
+        <!-- Mini susto tierno de murciélago -->
+        <div id="bat-scare-overlay">
+          <svg class="scare-bat-svg" viewBox="0 0 240 130" fill="none">
+            <path d="M120 52 C106 32, 85 26, 60 34 C35 42, 16 25, 8 15 C14 48, 22 72, 46 84 C58 70, 72 72, 84 92 C98 78, 108 82, 120 96 C132 82, 142 78, 156 92 C168 72, 182 70, 194 84 C218 72, 226 48, 232 15 C224 25, 205 42, 180 34 C155 26, 134 32, 120 52 Z" fill="#180a2b" stroke="#c084fc" stroke-width="3.5"/>
+            <polygon points="103,42 110,20 116,44" fill="#180a2b" stroke="#c084fc" stroke-width="2.5"/>
+            <polygon points="137,42 130,20 124,44" fill="#180a2b" stroke="#c084fc" stroke-width="2.5"/>
+            <circle cx="111" cy="56" r="5" fill="#f43f8e"/>
+            <circle cx="129" cy="56" r="5" fill="#f43f8e"/>
+            <path d="M113 68 L116 74 L119 68 M121 68 L124 74 L127 68" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/>
+          </svg>
+          <div class="scare-caption">¡BUUU! Tranquila Mailee, solo era un murciélago fan de Kuromi 🦇💜</div>
+        </div>
+      </div>
+
+      <div class="controls-bar">
+        <span>Caminar: <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> o <kbd>Flechas</kbd></span>
+        <span>Invocar relámpago extra: <kbd>Espacio</kbd></span>
+        <span>Los rayos iluminan todo el laberinto cada pocos segundos ⚡</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= NIVEL 3: PASTEL GÓTICO 3D (THREE.JS) ================= -->
+  <section id="screen-level3" class="screen">
+    <div id="three-container"></div>
+
+    <div class="cake-hud-top">
+      <h2>🎂 ¡Felices 16 Años, Mailee! 🦇</h2>
+      <p>Arrastra con el mouse para girar tu pastel gótico 3D • Haz clic en cada una de las 16 velas para soplarlas</p>
+    </div>
+
+    <div class="cake-hud-bottom">
+      <div class="candles-counter" id="candles-status">🕯️ Velas encendidas: 16 / 16</div>
+      <button class="cake-action-btn" id="btn-blow-all">💨 Soplar todas y pedir deseo</button>
+      <button class="cake-action-btn secondary" id="btn-replay-song">🎵 Repetir canción</button>
+      <button class="cake-action-btn secondary" id="btn-open-card" style="display:none;">💌 Ver tarjeta</button>
+    </div>
+  </section>
+
+  <!-- ================= MODAL DE FRASES ENTRE NIVELES ================= -->
+  <div id="intermission-modal">
+    <div class="modal-box">
+      <div class="modal-badge" id="modal-badge">¡Nivel Completado!</div>
+      <div class="modal-emoji" id="modal-emoji">🏐💜</div>
+      <h2 id="modal-title">¡Imparable, Mailee!</h2>
+      <div class="modal-quote" id="modal-quote"></div>
+      <button class="modal-next-btn" id="modal-next-btn">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- ================= TARJETA DE CUMPLEAÑOS FINAL ================= -->
+  <div id="birthday-card-overlay">
+    <div class="final-card">
+      <button class="final-card-close" id="btn-close-card" title="Seguir viendo el pastel 3D">✕</button>
+      <div class="card-date-pill">🦇 24 DE NOVIEMBRE • SWEET 16 🖤</div>
+      <h1>¡Feliz Cumpleaños, Mailee!</h1>
+      <div class="final-card-body">
+        <p>
+          ¡Llegaste al final del obby y apagaste tus <strong>16 velas</strong>! Hoy entras oficialmente al club de los 16: ya a solo dos pasos de la mayoría de edad... pero tranquila, todavía tienes permiso oficial para seguir jugando Roblox, disfrutar tus gustos de <em>niña fresa</em> versión gótica VIP y brillar con ese estilo único que tienes.
+        </p>
+        <p>
+          Que este nuevo año de vida venga lleno de remates épicos como en <em>Haikyu!!</em>, vibras lindas estilo Kuromi, risas infinitas, cero drama y todos los sueños que pediste al soplar las velas hechos realidad. Nunca pierdas esa chispa genial que te hace tan especial.
+        </p>
+        <div class="card-signature">
+          Con mucho cariño y un poquito de terror gótico,
+          <span>— El terror de roblox 🦇🎮</span>
+        </div>
+      </div>
+      <div class="final-card-actions">
+        <button class="cake-action-btn" id="btn-view-cake-again">🎂 Admirar pastel 3D</button>
+        <button class="cake-action-btn secondary" id="btn-relight-candles">🕯️ Encender velas de nuevo</button>
+        <button class="cake-action-btn secondary" id="btn-restart-all">🔄 Jugar desde el inicio</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================================
+       1. DETECCIÓN ESTRICTA DE CELULAR / TABLET (BLOQUEO TOTAL SI NO ES PC)
+       ========================================================================= */
+    let isBlockedMobile = false;
+
+    function checkDeviceAccess() {
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+      const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|Tablet/i.test(ua);
+      const isTouchOnly = window.matchMedia('(pointer: coarse)').matches && !window.matchMedia('(pointer: fine)').matches;
+      const isTooSmall = window.innerWidth < 820 || window.innerHeight < 480;
+
+      isBlockedMobile = isMobileUA || isTouchOnly || isTooSmall;
+      const blocker = document.getElementById('mobile-blocker');
+      if (isBlockedMobile) {
+        blocker.classList.add('active');
+      } else {
+        blocker.classList.remove('active');
+      }
+    }
+    checkDeviceAccess();
+    window.addEventListener('resize', checkDeviceAccess);
+
+    /* =========================================================================
+       2. MOTOR DE AUDIO PROCEDURAL (WEB AUDIO API — CERO ARCHIVOS EXTERNOS)
+       ========================================================================= */
+    const Sound = (() => {
+      let ctx = null;
+      let muted = false;
+      let songTimeouts = [];
+
+      function ensureCtx() {
+        if (!ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          ctx = new AudioCtx();
+        }
+        if (ctx.state === 'suspended') ctx.resume();
+      }
+
+      function toggleMute() {
+        muted = !muted;
+        if (muted) stopSong();
+        document.getElementById('btn-mute').textContent = muted ? '🔇 Sonido: OFF' : '🔊 Sonido: ON';
+      }
+
+      function playTone(freq, duration, type = 'sine', vol = 0.14, delay = 0, slideTo = null) {
+        if (muted) return;
+        ensureCtx();
+        const now = ctx.currentTime + delay;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, now);
+        if (slideTo) {
+          osc.frequency.exponentialRampToValueAtTime(slideTo, now + duration);
+        }
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.linearRampToValueAtTime(vol, now + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + duration + 0.03);
+      }
+
+      function playClick() {
+        playTone(520, 0.08, 'triangle', 0.12, 0, 760);
+      }
+
+      function playSpike(isSuper) {
+        if (muted) return;
+        ensureCtx();
+        playTone(isSuper ? 260 : 180, 0.14, 'sawtooth', 0.16, 0, 75);
+        playTone(isSuper ? 880 : 620, 0.16, 'triangle', 0.12, 0.02, isSuper ? 1320 : 880);
+        if (isSuper) {
+          playTone(1046, 0.22, 'sine', 0.11, 0.06, 1568);
+        }
+      }
+
+      function playMiss() {
+        playTone(230, 0.22, 'triangle', 0.12, 0, 120);
+      }
+
+      function playThunder() {
+        if (muted) return;
+        ensureCtx();
+        const bufferSize = ctx.sampleRate * 1.6;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.55));
+        }
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(420, ctx.currentTime);
+        filter.frequency.exponentialRampToValueAtTime(65, ctx.currentTime + 1.5);
+
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.32, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.6);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        noise.start();
+      }
+
+      function playBatScare() {
+        if (muted) return;
+        playThunder();
+        playTone(1200, 0.12, 'sawtooth', 0.09, 0.02, 720);
+        playTone(1450, 0.14, 'triangle', 0.09, 0.12, 680);
+      }
+
+      function playCollect() {
+        const notes = [587.33, 739.99, 880, 1174.66];
+        notes.forEach((n, idx) => playTone(n, 0.22, 'triangle', 0.12, idx * 0.065));
+      }
+
+      function playWin() {
+        const chord = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+        chord.forEach((n, idx) => playTone(n, 0.38, 'triangle', 0.13, idx * 0.08));
+      }
+
+      function playBlowCandle() {
+        if (muted) return;
+        ensureCtx();
+        // Soplido suave
+        const bufferSize = Math.floor(ctx.sampleRate * 0.22);
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.sin((i / bufferSize) * Math.PI);
+        }
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 1100;
+        const gain = ctx.createGain();
+        gain.gain.value = 0.16;
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        noise.start();
+        // Chispa mágica
+        playTone(987.77, 0.22, 'sine', 0.08, 0.05, 1318.5);
+      }
+
+      function stopSong() {
+        songTimeouts.forEach(t => clearTimeout(t));
+        songTimeouts = [];
+      }
+
+      // Melodía de "Feliz Cumpleaños" en estilo Cajita Musical Gótica
+      function playHappyBirthday() {
+        stopSong();
+        if (muted) return;
+        ensureCtx();
+
+        const notesMap = {
+          G3: 196.00, A3: 220.00, B3: 246.94, C4: 261.63, D4: 293.66,
+          E4: 329.63, Fs4: 369.99, G4: 392.00, A4: 440.00, B4: 493.88,
+          C5: 523.25, D5: 587.33
+        };
+
+        // [nota, duracion_en_beats, bajo_opcional]
+        const melody = [
+          ['D4', 0.72, null], ['D4', 0.28, null], ['E4', 1.0, 'G3'], ['D4', 1.0, null], ['G4', 1.0, 'B3'], ['Fs4', 2.0, 'D4'],
+          ['D4', 0.72, null], ['D4', 0.28, null], ['E4', 1.0, 'D4'], ['D4', 1.0, null], ['A4', 1.0, 'C4'], ['G4', 2.0, 'G3'],
+          ['D4', 0.72, null], ['D4', 0.28, null], ['D5', 1.0, 'G3'], ['B4', 1.0, 'B3'], ['G4', 1.0, 'C4'], ['Fs4', 1.0, 'A3'], ['E4', 1.65, 'C4'],
+          ['C5', 0.72, null], ['C5', 0.28, null], ['B4', 1.0, 'G3'], ['G4', 1.0, 'B3'], ['A4', 1.0, 'D4'], ['G4', 2.6, 'G3']
+        ];
+
+        const beatMs = 430;
+        let t = 180;
+
+        melody.forEach(([note, dur, bass]) => {
+          const timeout = setTimeout(() => {
+            if (muted) return;
+            const freq = notesMap[note];
+            const sec = (dur * beatMs) / 1000;
+            // Campana/celesta principal + armónico cristalino
+            playTone(freq, sec * 1.15, 'triangle', 0.14, 0);
+            playTone(freq * 2, sec * 0.65, 'sine', 0.045, 0.01);
+            if (bass) {
+              playTone(notesMap[bass], sec * 1.5, 'sine', 0.09, 0);
+            }
+          }, t);
+          songTimeouts.push(timeout);
+          t += dur * beatMs;
+        });
+      }
+
+      return {
+        ensureCtx, toggleMute, playClick, playSpike, playMiss,
+        playThunder, playBatScare, playCollect, playWin,
+        playBlowCandle, playHappyBirthday, stopSong
+      };
+    })();
+
+    document.getElementById('btn-mute').addEventListener('click', () => {
+      Sound.toggleMute();
+    });
+
+    /* =========================================================================
+       3. DIBUJO PROCEDURAL DEL AVATAR ROBLOX-CHIBI DE MAILEE (KUROMI + HAIKYU!!)
+       ========================================================================= */
+    function drawMaileeAvatar(ctx, x, y, scale, facing = 1, anim = 0, jumping = false, jerseyMode = true) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.scale(scale * facing, scale);
+
+      // Sombra en el suelo
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+      ctx.beginPath();
+      ctx.ellipse(0, 38, 18, 6, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      const walkSwing = jumping ? 0.45 : Math.sin(anim * 0.28) * 0.35;
+
+      // Piernas estilo Roblox (bloque redondeado)
+      ctx.save();
+      ctx.translate(-7, 16);
+      ctx.rotate(walkSwing);
+      ctx.fillStyle = '#181028';
+      roundRect(ctx, -6, 0, 12, 20, 4);
+      ctx.fill();
+      ctx.fillStyle = '#a855f7'; // zapatillas moradas
+      roundRect(ctx, -6, 15, 13, 6, 3);
+      ctx.fill();
+      ctx.restore();
+
+      ctx.save();
+      ctx.translate(7, 16);
+      ctx.rotate(-walkSwing);
+      ctx.fillStyle = '#120b1f';
+      roundRect(ctx, -6, 0, 12, 20, 4);
+      ctx.fill();
+      ctx.fillStyle = '#f43f8e'; // detalle rosa Kuromi
+      roundRect(ctx, -6, 15, 13, 6, 3);
+      ctx.fill();
+      ctx.restore();
+
+      // Brazo trasero
+      ctx.save();
+      ctx.translate(-14, -4);
+      ctx.rotate(jumping ? -2.2 : -walkSwing * 1.1);
+      ctx.fillStyle = '#24133d';
+      roundRect(ctx, -5, 0, 10, 20, 4);
+      ctx.fill();
+      ctx.restore();
+
+      // Torso bloque Roblox (camiseta negra/naranja Karasuno #10 en Nivel 1 o hoodie gótico en Nivel 2)
+      ctx.fillStyle = jerseyMode ? '#140f1d' : '#1d0e33';
+      ctx.strokeStyle = jerseyMode ? '#fb923c' : '#a855f7';
+      ctx.lineWidth = 2;
+      roundRect(ctx, -14, -10, 28, 28, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      if (jerseyMode) {
+        // Franja lateral naranja estilo Haikyu!! y número 10
+        ctx.fillStyle = '#fb923c';
+        ctx.fillRect(-13, -6, 4, 20);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 12px Fredoka, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('10', 2, 9);
+      } else {
+        // Moñito rosa Kuromi en el pecho
+        ctx.fillStyle = '#f43f8e';
+        ctx.beginPath();
+        ctx.arc(0, 3, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Brazo delantero
+      ctx.save();
+      ctx.translate(14, -4);
+      ctx.rotate(jumping ? -2.5 : walkSwing * 1.1);
+      ctx.fillStyle = '#2d164c';
+      roundRect(ctx, -5, 0, 10, 20, 4);
+      ctx.fill();
+      ctx.restore();
+
+      // Cabeza estilo Roblox Chibi
+      ctx.fillStyle = '#ffe5d9';
+      roundRect(ctx, -15, -38, 30, 27, 9);
+      ctx.fill();
+
+      // Capucha negra gótica estilo Kuromi
+      ctx.fillStyle = '#120a1f';
+      ctx.strokeStyle = '#9333ea';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.arc(0, -27, 17, Math.PI * 0.92, Math.PI * 2.08);
+      ctx.lineTo(15, -16);
+      ctx.lineTo(13, -24);
+      ctx.quadraticCurveTo(0, -32, -13, -24);
+      ctx.lineTo(-15, -16);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Orejas de bufón estilo Kuromi con pompones rosas
+      // Oreja izquierda
+      ctx.fillStyle = '#120a1f';
+      ctx.beginPath();
+      ctx.moveTo(-12, -37);
+      ctx.quadraticCurveTo(-24, -55, -27, -43);
+      ctx.quadraticCurveTo(-20, -36, -5, -39);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = '#f43f8e';
+      ctx.beginPath();
+      ctx.arc(-27, -44, 4.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Oreja derecha
+      ctx.fillStyle = '#120a1f';
+      ctx.beginPath();
+      ctx.moveTo(12, -37);
+      ctx.quadraticCurveTo(24, -55, 27, -43);
+      ctx.quadraticCurveTo(20, -36, 5, -39);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = '#f43f8e';
+      ctx.beginPath();
+      ctx.arc(27, -44, 4.2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Calaverita rosa en la frente de la capucha
+      ctx.fillStyle = '#f43f8e';
+      ctx.beginPath();
+      ctx.arc(0, -35, 4.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#120a1f';
+      ctx.fillRect(-2.2, -36, 1.5, 1.8);
+      ctx.fillRect(0.8, -36, 1.5, 1.8);
+
+      // Ojos lindos chibi + rubor
+      ctx.fillStyle = '#1b0c2e';
+      ctx.beginPath();
+      ctx.ellipse(-5, -22, 2.5, 3.2, 0, 0, Math.PI * 2);
+      ctx.ellipse(6, -22, 2.5, 3.2, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // Brillo de ojos
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(-5.8, -23.3, 1, 0, Math.PI * 2);
+      ctx.arc(5.2, -23.3, 1, 0, Math.PI * 2);
+      ctx.fill();
+      // Rubor
+      ctx.fillStyle = 'rgba(244, 63, 142, 0.35)';
+      ctx.beginPath();
+      ctx.ellipse(-9.5, -18.5, 3, 1.6, 0, 0, Math.PI * 2);
+      ctx.ellipse(10.5, -18.5, 3, 1.6, 0, 0, Math.PI * 2);
+      ctx.fill();
+      // Sonrisa traviesa
+      ctx.strokeStyle = '#3b154d';
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.arc(0.5, -18, 3.5, 0.15, Math.PI - 0.15);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    function drawBatSilhouette(ctx, x, y, size, flapPhase, color = '#1c0b33') {
+      ctx.save();
+      ctx.translate(x, y);
+      const wingY = Math.sin(flapPhase) * size * 0.45;
+      ctx.fillStyle = color;
+      ctx.strokeStyle = 'rgba(192, 132, 252, 0.65)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(-size * 0.6, -size * 0.6 + wingY, -size, wingY);
+      ctx.quadraticCurveTo(-size * 0.55, size * 0.25, -size * 0.22, size * 0.25);
+      ctx.lineTo(0, size * 0.42);
+      ctx.lineTo(size * 0.22, size * 0.25);
+      ctx.quadraticCurveTo(size * 0.55, size * 0.25, size, wingY);
+      ctx.quadraticCurveTo(size * 0.6, -size * 0.6 + wingY, 0, 0);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+      // Ojitos fucsia
+      ctx.fillStyle = '#f43f8e';
+      ctx.fillRect(-size * 0.12, 0, 2.2, 2.2);
+      ctx.fillRect(size * 0.06, 0, 2.2, 2.2);
+      ctx.restore();
+    }
+
+    /* =========================================================================
+       4. FONDO ANIMADO GLOBAL + MINIATURA DEL LOBBY
+       ========================================================================= */
+    const bgCanvas = document.getElementById('bg-lobby-canvas');
+    const bgCtx = bgCanvas.getContext('2d');
+    let bgParticles = [];
+    let bgBats = [];
+
+    function resizeBgCanvas() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+    resizeBgCanvas();
+    window.addEventListener('resize', resizeBgCanvas);
+
+    for (let i = 0; i < 55; i++) {
+      bgParticles.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: Math.random() * 2.2 + 0.8,
+        vy: -Math.random() * 0.45 - 0.15,
+        color: Math.random() > 0.35 ? 'rgba(192, 132, 252, 0.45)' : 'rgba(244, 63, 142, 0.45)'
+      });
+    }
+    for (let i = 0; i < 6; i++) {
+      bgBats.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight * 0.6 + 60,
+        vx: (Math.random() * 1.1 + 0.6) * (Math.random() > 0.5 ? 1 : -1),
+        size: 12 + Math.random() * 10,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+
+    function animateGlobalBg() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+      for (const p of bgParticles) {
+        p.y += p.vy;
+        if (p.y < -10) {
+          p.y = bgCanvas.height + 10;
+          p.x = Math.random() * bgCanvas.width;
+        }
+        bgCtx.fillStyle = p.color;
+        bgCtx.beginPath();
+        bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        bgCtx.fill();
+      }
+      for (const b of bgBats) {
+        b.x += b.vx;
+        b.phase += 0.14;
+        b.y += Math.sin(b.phase * 0.4) * 0.5;
+        if (b.x > bgCanvas.width + 40) b.x = -40;
+        if (b.x < -40) b.x = bgCanvas.width + 40;
+        drawBatSilhouette(bgCtx, b.x, b.y, b.size, b.phase, 'rgba(30, 14, 54, 0.72)');
+      }
+      requestAnimationFrame(animateGlobalBg);
+    }
+    animateGlobalBg();
+
+    // Animación de la miniatura del Lobby (Mailee con la luna morada y balón)
+    const thumbCanvas = document.getElementById('lobby-preview-canvas');
+    const thumbCtx = thumbCanvas.getContext('2d');
+    let lobbyTick = 0;
+    let lobbyActive = true;
+
+    function animateLobbyPreview() {
+      if (!lobbyActive) return;
+      lobbyTick += 0.04;
+      const w = thumbCanvas.width, h = thumbCanvas.height;
+      thumbCtx.clearRect(0, 0, w, h);
+
+      // Cielo gótico nocturno
+      const grad = thumbCtx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, '#140826');
+      grad.addColorStop(0.65, '#2b104c');
+      grad.addColorStop(1, '#0b0514');
+      thumbCtx.fillStyle = grad;
+      thumbCtx.fillRect(0, 0, w, h);
+
+      // Luna llena gótica
+      thumbCtx.save();
+      thumbCtx.shadowColor = '#c084fc';
+      thumbCtx.shadowBlur = 35;
+      thumbCtx.fillStyle = '#f3e8ff';
+      thumbCtx.beginPath();
+      thumbCtx.arc(220, 108, 56, 0, Math.PI * 2);
+      thumbCtx.fill();
+      thumbCtx.restore();
+
+      // Silueta de castillo gótico
+      thumbCtx.fillStyle = '#0e061b';
+      thumbCtx.fillRect(0, 235, w, 90);
+      thumbCtx.beginPath();
+      thumbCtx.moveTo(45, 235); thumbCtx.lineTo(45, 165); thumbCtx.lineTo(68, 125); thumbCtx.lineTo(90, 165); thumbCtx.lineTo(90, 235);
+      thumbCtx.moveTo(350, 235); thumbCtx.lineTo(350, 155); thumbCtx.lineTo(375, 112); thumbCtx.lineTo(400, 155); thumbCtx.lineTo(400, 235);
+      thumbCtx.fill();
+
+      // Murciélagos orbitando la luna
+      drawBatSilhouette(thumbCtx, 130 + Math.cos(lobbyTick) * 35, 92 + Math.sin(lobbyTick * 1.6) * 14, 15, lobbyTick * 5);
+      drawBatSilhouette(thumbCtx, 310 + Math.sin(lobbyTick * 0.9) * 30, 82 + Math.cos(lobbyTick * 1.4) * 12, 13, lobbyTick * 6 + 2);
+
+      // Mailee saltando feliz
+      const bounce = Math.abs(Math.sin(lobbyTick * 1.5)) * 16;
+      drawMaileeAvatar(thumbCtx, 220, 224 - bounce, 1.55, 1, lobbyTick * 10, bounce > 9, true);
+
+      // Balón de vóley flotando con halo neón
+      const bx = 295, by = 185 + Math.sin(lobbyTick * 2.2) * 10;
+      thumbCtx.save();
+      thumbCtx.shadowColor = '#f43f8e';
+      thumbCtx.shadowBlur = 16;
+      thumbCtx.fillStyle = '#e9d5ff';
+      thumbCtx.beginPath();
+      thumbCtx.arc(bx, by, 15, 0, Math.PI * 2);
+      thumbCtx.fill();
+      thumbCtx.strokeStyle = '#7e22ce';
+      thumbCtx.lineWidth = 2.2;
+      thumbCtx.beginPath();
+      thumbCtx.arc(bx, by, 15, 0, Math.PI * 2);
+      thumbCtx.moveTo(bx - 13, by - 5);
+      thumbCtx.quadraticCurveTo(bx, by + 5, bx + 13, by - 5);
+      thumbCtx.moveTo(bx - 8, by + 12);
+      thumbCtx.quadraticCurveTo(bx + 2, by - 4, bx + 10, by + 10);
+      thumbCtx.stroke();
+      thumbCtx.restore();
+
+      requestAnimationFrame(animateLobbyPreview);
+    }
+    animateLobbyPreview();
+
+    /* =========================================================================
+       5. CONTROL DE PANTALLAS Y PROGRESO
+       ========================================================================= */
+    const screens = {
+      lobby: document.getElementById('screen-lobby'),
+      level1: document.getElementById('screen-level1'),
+      level2: document.getElementById('screen-level2'),
+      level3: document.getElementById('screen-level3')
+    };
+
+    function showScreen(name) {
+      Object.values(screens).forEach(s => s.classList.remove('active'));
+      screens[name].classList.add('active');
+      lobbyActive = (name === 'lobby');
+      if (lobbyActive) animateLobbyPreview();
+
+      // Actualizar pasos en el HUD superior
+      const s1 = document.getElementById('step-1');
+      const s2 = document.getElementById('step-2');
+      const s3 = document.getElementById('step-3');
+      [s1, s2, s3].forEach(el => el.classList.remove('active', 'done'));
+
+      if (name === 'level1') s1.classList.add('active');
+      if (name === 'level2') { s1.classList.add('done'); s2.classList.add('active'); }
+      if (name === 'level3') { s1.classList.add('done'); s2.classList.add('done'); s3.classList.add('active'); }
+    }
+
+    function showIntermission({ badge, emoji, title, quote, btnText, onNext }) {
+      Sound.playWin();
+      document.getElementById('modal-badge').textContent = badge;
+      document.getElementById('modal-emoji').textContent = emoji;
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-quote').innerHTML = quote;
+      const btn = document.getElementById('modal-next-btn');
+      btn.textContent = btnText;
+
+      const modal = document.getElementById('intermission-modal');
+      modal.classList.add('active');
+
+      const handler = () => {
+        Sound.playClick();
+        modal.classList.remove('active');
+        btn.removeEventListener('click', handler);
+        onNext();
+      };
+      btn.addEventListener('click', handler);
+    }
+
+    // Teclas globales compartidas
+    const keys = {};
+    window.addEventListener('keydown', (e) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', ' '].includes(e.key)) {
+        if (!screens.lobby.classList.contains('active')) e.preventDefault();
+      }
+      keys[e.code] = true;
+    });
+    window.addEventListener('keyup', (e) => {
+      keys[e.code] = false;
+    });
+
+    document.getElementById('btn-start-game').addEventListener('click', () => {
+      if (isBlockedMobile) return;
+      Sound.ensureCtx();
+      Sound.playClick();
+      startLevel1();
+    });
+
+    /* =========================================================================
+       6. NIVEL 1: LA CANCHA NOCTURNA (VÓLEY x HAIKYU!! x GÓTICO)
+       ========================================================================= */
+    let l1Running = false;
+    let l1Raf = null;
+
+    function startLevel1() {
+      stopLevel2();
+      showScreen('level1');
+      const canvas = document.getElementById('canvas-level1');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+      const GROUND_Y = 448;
+      const TARGET_SCORE = 10;
+
+      let score = 0;
+      let combo = 0;
+      document.getElementById('l1-score').textContent = '0';
+
+      const player = {
+        x: 240, y: GROUND_Y, vx: 0, vy: 0,
+        speed: 6.4, jumpPower: -14.2, onGround: true,
+        facing: 1, anim: 0
+      };
+
+      let ball = null;
+      let serveTimer = 35;
+      let lightningAlpha = 0;
+      let lightningTimer = 180;
+      let shakeTime = 0;
+      let particles = [];
+      let popups = [];
+      let feathers = [];
+      let bats = [
+        { x: 120, y: 95, vx: 1.4, phase: 0 },
+        { x: 740, y: 120, vx: -1.6, phase: 2.1 },
+        { x: 460, y: 72, vx: 1.1, phase: 4.0 }
+      ];
+
+      for (let i = 0; i < 18; i++) {
+        feathers.push({
+          x: Math.random() * W,
+          y: Math.random() * GROUND_Y,
+          vx: -0.5 - Math.random() * 0.6,
+          vy: 0.4 + Math.random() * 0.5,
+          rot: Math.random() * Math.PI * 2,
+          vrot: (Math.random() - 0.5) * 0.04
+        });
+      }
+
+      function spawnBall() {
+        // Balón lanzado en arco elegante desde el lado derecho sobre la red
+        const targetX = 120 + Math.random() * 340;
+        const flightFrames = 86 + Math.random() * 14;
+        const startX = 835;
+        const startY = 230 + Math.random() * 75;
+        const g = 0.25;
+        const vx = (targetX - startX) / flightFrames;
+        const vy = (GROUND_Y - 35 - startY - 0.5 * g * flightFrames * flightFrames) / flightFrames;
+        ball = {
+          x: startX, y: startY, vx, vy, g,
+          r: 18, hit: false, trail: [], spin: 0
+        };
+      }
+
+      function addPopup(text, x, y, color = '#f472b6') {
+        popups.push({ text, x, y, vy: -1.5, life: 52, color });
+      }
+
+      function addBurst(x, y, color, count = 18) {
+        for (let i = 0; i < count; i++) {
+          const ang = Math.random() * Math.PI * 2;
+          const spd = 2 + Math.random() * 5.5;
+          particles.push({
+            x, y, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd,
+            r: 2.5 + Math.random() * 3.5, life: 28 + Math.random() * 16, color
+          });
+        }
+      }
+
+      l1Running = true;
+
+      function loop() {
+        if (!l1Running) return;
+        if (isBlockedMobile) { l1Raf = requestAnimationFrame(loop); return; }
+
+        // Movimiento de Mailee (restringida al lado izquierdo de la red: x entre 55 y 485)
+        let moving = false;
+        if (keys['ArrowLeft'] || keys['KeyA']) {
+          player.vx = -player.speed; player.facing = -1; moving = true;
+        } else if (keys['ArrowRight'] || keys['KeyD']) {
+          player.vx = player.speed; player.facing = 1; moving = true;
+        } else {
+          player.vx *= 0.72;
+        }
+
+        if ((keys['ArrowUp'] || keys['KeyW'] || keys['Space']) && player.onGround) {
+          player.vy = player.jumpPower;
+          player.onGround = false;
+        }
+
+        player.x += player.vx;
+        player.x = Math.max(55, Math.min(485, player.x));
+
+        player.vy += 0.68;
+        player.y += player.vy;
+        if (player.y >= GROUND_Y) {
+          player.y = GROUND_Y;
+          player.vy = 0;
+          player.onGround = true;
+        }
+        if (moving) player.anim += 1;
+
+        // Tormenta atmosférica de fondo
+        lightningTimer--;
+        if (lightningTimer <= 0) {
+          lightningAlpha = 0.55;
+          lightningTimer = 210 + Math.random() * 200;
+          Sound.playThunder();
+        }
+        if (lightningAlpha > 0) lightningAlpha = Math.max(0, lightningAlpha - 0.025);
+
+        // Lógica del balón
+        if (!ball) {
+          serveTimer--;
+          if (serveTimer <= 0) spawnBall();
+        } else {
+          ball.trail.push({ x: ball.x, y: ball.y });
+          if (ball.trail.length > 14) ball.trail.shift();
+
+          ball.x += ball.vx;
+          ball.y += ball.vy;
+          ball.vy += ball.g;
+          ball.spin += ball.hit ? 0.28 : -0.14;
+
+          // Colisión generosa con Mailee
+          if (!ball.hit) {
+            const dx = ball.x - player.x;
+            const dy = ball.y - (player.y - 24);
+            const dist = Math.hypot(dx, dy);
+            if (dist < 58) {
+              ball.hit = true;
+              const isSuperSpike = !player.onGround;
+              ball.vx = isSuperSpike ? 13.5 : 9.8;
+              ball.vy = isSuperSpike ? -9.2 : -11.5;
+              score++;
+              combo++;
+              document.getElementById('l1-score').textContent = score;
+              Sound.playSpike(isSuperSpike);
+              shakeTime = isSuperSpike ? 11 : 5;
+
+              addBurst(ball.x, ball.y, isSuperSpike ? '#fb923c' : '#c084fc', isSuperSpike ? 26 : 16);
+              addBurst(ball.x, ball.y, '#f43f8e', 10);
+
+              const cheers = isSuperSpike
+                ? ['¡FLY HIGH! 🔥', '¡SÚPER REMATE! ⚡', '¡MODO HINATA! 🏐', '¡REMATE GÓTICO! 🖤']
+                : ['¡NICE RECEIVE! ✨', '¡BUEN PASE! 💜', '¡QUÉ REFLEJOS! 🎀'];
+              addPopup(cheers[score % cheers.length], player.x, player.y - 75, isSuperSpike ? '#fb923c' : '#e879f9');
+
+              if (score >= TARGET_SCORE) {
+                l1Running = false;
+                setTimeout(() => {
+                  showIntermission({
+                    badge: '¡Nivel 1 Completado! 🏐',
+                    emoji: '🏐🖤✨',
+                    title: '¡Mailee, la Estrella de la Cancha!',
+                    quote: '¡Remataste como protagonista de <strong>Haikyu!!</strong> bajo la tormenta! Y lo más épico de todo: salvaste cada balón sin despeinarte ni arruinar el outfit. Oficialmente una <strong>niña fresa en modo pro</strong>.<br><br>Pero prepárate... ahora se apagan las luces y toca entrar al laberinto de los relámpagos.',
+                    btnText: 'Entrar al Nivel 2 ⚡',
+                    onNext: startLevel2
+                  });
+                }, 650);
+              }
+            }
+          }
+
+          // Si el balón rematado sale por la derecha -> siguiente saque rápido
+          if (ball.hit && (ball.x > W + 40 || ball.y > GROUND_Y + 40)) {
+            ball = null;
+            serveTimer = 24;
+          } else if (!ball.hit && ball.y > GROUND_Y + 10) {
+            // Falló (sin castigo frustrante, solo mensaje divertido)
+            combo = 0;
+            Sound.playMiss();
+            addBurst(ball.x, GROUND_Y, '#6b21a8', 12);
+            const missLines = ['¡Casi! El viento gótico lo movió 🦇', '¡Salta como Hinata! 🏐', '¡Esa iba con efecto! ⚡'];
+            addPopup(missLines[Math.floor(Math.random() * missLines.length)], Math.max(130, ball.x), GROUND_Y - 35, '#c4b5fd');
+            ball = null;
+            serveTimer = 36;
+          }
+        }
+
+        // ================= RENDER NIVEL 1 =================
+        ctx.save();
+        if (shakeTime > 0) {
+          shakeTime--;
+          ctx.translate((Math.random() - 0.5) * 8, (Math.random() - 0.5) * 8);
+        }
+
+        // Cielo nocturno morado
+        const sky = ctx.createLinearGradient(0, 0, 0, GROUND_Y);
+        sky.addColorStop(0, '#090414');
+        sky.addColorStop(0.55, '#1e0c3a');
+        sky.addColorStop(1, '#36135c');
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, W, H);
+
+        // Luna llena
+        ctx.save();
+        ctx.shadowColor = '#c084fc';
+        ctx.shadowBlur = 45;
+        ctx.fillStyle = '#f5ebff';
+        ctx.beginPath();
+        ctx.arc(735, 105, 58, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // Silueta de gradas / edificio escolar gótico
+        ctx.fillStyle = '#120722';
+        ctx.fillRect(0, 315, W, 135);
+        for (let wx = 40; wx < W; wx += 95) {
+          ctx.fillStyle = 'rgba(192, 132, 252, 0.14)';
+          roundRect(ctx, wx, 342, 42, 62, 18);
+          ctx.fill();
+        }
+
+        // Murciélagos cruzando el cielo
+        for (const b of bats) {
+          b.x += b.vx;
+          b.phase += 0.17;
+          if (b.x > W + 40) b.x = -40;
+          if (b.x < -40) b.x = W + 40;
+          drawBatSilhouette(ctx, b.x, b.y + Math.sin(b.phase * 0.4) * 10, 16, b.phase);
+        }
+
+        // Plumas de cuervo cayendo (guiño Haikyu!! Karasuno)
+        for (const f of feathers) {
+          f.x += f.vx; f.y += f.vy; f.rot += f.vrot;
+          if (f.y > GROUND_Y) { f.y = -15; f.x = Math.random() * W; }
+          if (f.x < -20) f.x = W + 20;
+          ctx.save();
+          ctx.translate(f.x, f.y);
+          ctx.rotate(f.rot);
+          ctx.fillStyle = 'rgba(15, 8, 28, 0.85)';
+          ctx.strokeStyle = 'rgba(168, 85, 247, 0.45)';
+          ctx.beginPath();
+          ctx.ellipse(0, 0, 9, 3.2, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        // Suelo de cancha nocturna con líneas neón
+        ctx.fillStyle = '#140b24';
+        ctx.fillRect(0, GROUND_Y, W, H - GROUND_Y);
+        ctx.strokeStyle = '#a855f7';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(0, GROUND_Y);
+        ctx.lineTo(W, GROUND_Y);
+        ctx.stroke();
+
+        ctx.strokeStyle = 'rgba(244, 63, 142, 0.35)';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(40, GROUND_Y + 12, W - 80, 48);
+
+        // Red de vóley en el centro-derecha (x = 535)
+        ctx.fillStyle = '#d8b4fe';
+        ctx.fillRect(533, 250, 7, GROUND_Y - 250);
+        // Malla de la red
+        ctx.strokeStyle = 'rgba(233, 213, 255, 0.55)';
+        ctx.lineWidth = 1.5;
+        ctx.fillStyle = 'rgba(168, 85, 247, 0.14)';
+        ctx.fillRect(538, 256, 22, 110);
+        for (let ny = 256; ny <= 366; ny += 16) {
+          ctx.beginPath(); ctx.moveTo(538, ny); ctx.lineTo(560, ny); ctx.stroke();
+        }
+        // Banda superior de la red
+        ctx.fillStyle = '#f43f8e';
+        ctx.fillRect(532, 250, 30, 8);
+
+        // Silueta rival fantasmagórica que saca desde la derecha
+        ctx.save();
+        ctx.globalAlpha = 0.55;
+        ctx.fillStyle = '#2e1065';
+        ctx.beginPath();
+        ctx.arc(825, 385, 16, 0, Math.PI * 2);
+        ctx.fill();
+        roundRect(ctx, 811, 401, 28, 46, 8);
+        ctx.fill();
+        ctx.restore();
+
+        // Mailee Avatar Roblox-Chibi
+        drawMaileeAvatar(ctx, player.x, player.y - 36, 1.15, player.facing, player.anim, !player.onGround, true);
+
+        // Balón con estela neón
+        if (ball) {
+          for (let i = 0; i < ball.trail.length; i++) {
+            const pt = ball.trail[i];
+            const alpha = (i / ball.trail.length) * 0.55;
+            ctx.fillStyle = ball.hit ? `rgba(251, 146, 60, ${alpha})` : `rgba(192, 132, 252, ${alpha})`;
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, ball.r * (i / ball.trail.length) * 0.85, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          ctx.save();
+          ctx.translate(ball.x, ball.y);
+          ctx.rotate(ball.spin);
+          ctx.shadowColor = ball.hit ? '#fb923c' : '#f43f8e';
+          ctx.shadowBlur = 22;
+          ctx.fillStyle = '#f8f0ff';
+          ctx.beginPath();
+          ctx.arc(0, 0, ball.r, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Patrón de balón de vóley (morado + naranja Haikyu)
+          ctx.strokeStyle = '#6b21a8';
+          ctx.lineWidth = 2.6;
+          ctx.beginPath();
+          ctx.arc(0, 0, ball.r, 0, Math.PI * 2);
+          ctx.stroke();
+
+          ctx.strokeStyle = '#fb923c';
+          ctx.lineWidth = 2.4;
+          ctx.beginPath();
+          ctx.arc(-6, 0, 13, -0.9, 0.9);
+          ctx.stroke();
+
+          ctx.strokeStyle = '#a855f7';
+          ctx.beginPath();
+          ctx.arc(6, 0, 13, Math.PI - 0.9, Math.PI + 0.9);
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        // Partículas
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.life--;
+          if (p.life <= 0) { particles.splice(i, 1); continue; }
+          ctx.globalAlpha = p.life / 40;
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+
+        // Popups arcade
+        for (let i = popups.length - 1; i >= 0; i--) {
+          const pop = popups[i];
+          pop.y += pop.vy; pop.life--;
+          if (pop.life <= 0) { popups.splice(i, 1); continue; }
+          ctx.save();
+          ctx.globalAlpha = Math.min(1, pop.life / 20);
+          ctx.font = 'bold 20px Fredoka, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillStyle = '#090414';
+          ctx.fillText(pop.text, pop.x + 2, pop.y + 2);
+          ctx.fillStyle = pop.color;
+          ctx.fillText(pop.text, pop.x, pop.y);
+          ctx.restore();
+        }
+
+        // Destello de relámpago ambiental
+        if (lightningAlpha > 0) {
+          ctx.fillStyle = `rgba(233, 213, 255, ${lightningAlpha * 0.4})`;
+          ctx.fillRect(0, 0, W, H);
+          // Rayo zigzag
+          if (lightningAlpha > 0.35) {
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(620, 0);
+            ctx.lineTo(595, 90);
+            ctx.lineTo(632, 165);
+            ctx.lineTo(602, 260);
+            ctx.stroke();
+          }
+        }
+
+        // Combo badge
+        if (combo >= 2) {
+          ctx.fillStyle = 'rgba(251, 146, 60, 0.9)';
+          ctx.font = 'bold 17px Fredoka, sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillText(`🔥 COMBO x${combo}`, 22, 34);
+        }
+
+        ctx.restore();
+        l1Raf = requestAnimationFrame(loop);
+      }
+
+      loop();
+    }
+
+    function stopLevel1() {
+      l1Running = false;
+      if (l1Raf) cancelAnimationFrame(l1Raf);
+    }
+
+    /* =========================================================================
+       7. NIVEL 2: EL LABERINTO DE LOS RELÁMPAGOS (OSCURIDAD + RAYOS + KUROMI)
+       ========================================================================= */
+    let l2Running = false;
+    let l2Raf = null;
+
+    function startLevel2() {
+      stopLevel1();
+      showScreen('level2');
+
+      const canvas = document.getElementById('canvas-level2');
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width, H = canvas.height;
+
+      // Laberinto 15x11 (100% verificado y con múltiples rutas)
+      // 1 = pared gótica, 0 = pasillo
+      const MAZE = [
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,1,0,0,0,0,0,1,0,0,0,1],
+        [1,1,1,0,1,0,1,1,1,0,1,0,1,1,1],
+        [1,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
+        [1,0,1,1,1,0,1,1,1,1,1,1,1,0,1],
+        [1,0,1,0,0,0,0,0,0,0,0,0,1,0,1],
+        [1,0,1,1,1,1,1,0,1,1,1,0,1,0,1],
+        [1,0,0,0,0,0,1,0,1,0,0,0,0,0,1],
+        [1,1,1,0,1,0,1,0,1,1,1,1,1,0,1],
+        [1,0,0,0,1,0,0,0,0,0,0,0,0,0,1],
+        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+      ];
+
+      const ROWS = MAZE.length;
+      const COLS = MAZE[0].length;
+      const TILE = 44;
+      const OFF_X = Math.floor((W - COLS * TILE) / 2);
+      const OFF_Y = Math.floor((H - ROWS * TILE) / 2);
+
+      // Jugadora empieza en (1,1)
+      const p = {
+        x: OFF_X + 1.5 * TILE,
+        y: OFF_Y + 1.5 * TILE,
+        r: 13,
+        speed: 3.1,
+        facing: 1,
+        anim: 0
+      };
+
+      // 4 reliquias estilo Kuromi (calaveritas/lazos rosas)
+      const relics = [
+        { col: 7, row: 3, collected: false },
+        { col: 13, row: 1, collected: false },
+        { col: 9, row: 7, collected: false },
+        { col: 3, row: 5, collected: false }
+      ];
+      let collectedCount = 0;
+      document.getElementById('l2-relics').textContent = '0';
+
+      const portal = { col: 13, row: 9 };
+
+      // Sistema de relámpagos que revelan el laberinto
+      let flashIntensity = 1.0; // Empieza con un rayo para orientar a Mailee
+      let autoFlashTimer = 210; // ~3.5 segundos
+      let manualCooldown = 0;
+      let tick = 0;
+      let scareTriggered = false;
+      let swoopBats = [];
+      let statusToast = '⚡ ¡Un rayo reveló el laberinto! Busca las 4 reliquias rosas de Kuromi.';
+      let toastTimer = 220;
+
+      // Canvas auxiliar para la capa de oscuridad con linterna
+      const darkCanvas = document.createElement('canvas');
+      darkCanvas.width = W;
+      darkCanvas.height = H;
+      const darkCtx = darkCanvas.getContext('2d');
+
+      function triggerLightning(withBats = true) {
+        flashIntensity = 1.0;
+        Sound.playThunder();
+        if (withBats) {
+          for (let i = 0; i < 4; i++) {
+            const fromLeft = Math.random() > 0.5;
+            swoopBats.push({
+              x: fromLeft ? -30 : W + 30,
+              y: 60 + Math.random() * (H - 120),
+              vx: (fromLeft ? 1 : -1) * (4.5 + Math.random() * 3.5),
+              vy: (Math.random() - 0.5) * 1.6,
+              size: 15 + Math.random() * 10,
+              phase: Math.random() * 6
+            });
+          }
+        }
+      }
+
+      function triggerCuteScare() {
+        scareTriggered = true;
+        Sound.playBatScare();
+        const ov = document.getElementById('bat-scare-overlay');
+        ov.classList.add('show');
+        setTimeout(() => {
+          ov.classList.remove('show');
+        }, 1650);
+      }
+
+      function isWallAtPixel(px, py) {
+        const col = Math.floor((px - OFF_X) / TILE);
+        const row = Math.floor((py - OFF_Y) / TILE);
+        if (row < 0 || row >= ROWS || col < 0 || col >= COLS) return true;
+        return MAZE[row][col] === 1;
+      }
+
+      function canMoveTo(nx, ny) {
+        const r = p.r;
+        return (
+          !isWallAtPixel(nx - r, ny - r) &&
+          !isWallAtPixel(nx + r, ny - r) &&
+          !isWallAtPixel(nx - r, ny + r) &&
+          !isWallAtPixel(nx + r, ny + r)
+        );
+      }
+
+      l2Running = true;
+      Sound.playThunder();
+
+      function loop() {
+        if (!l2Running) return;
+        if (isBlockedMobile) { l2Raf = requestAnimationFrame(loop); return; }
+
+        tick++;
+
+        // Movimiento suave con deslizamiento en esquinas
+        let dx = 0, dy = 0;
+        if (keys['ArrowLeft'] || keys['KeyA']) { dx -= 1; p.facing = -1; }
+        if (keys['ArrowRight'] || keys['KeyD']) { dx += 1; p.facing = 1; }
+        if (keys['ArrowUp'] || keys['KeyW']) dy -= 1;
+        if (keys['ArrowDown'] || keys['KeyS']) dy += 1;
+
+        if (dx !== 0 || dy !== 0) {
+          const len = Math.hypot(dx, dy);
+          const vx = (dx / len) * p.speed;
+          const vy = (dy / len) * p.speed;
+          if (canMoveTo(p.x + vx, p.y)) p.x += vx;
+          if (canMoveTo(p.x, p.y + vy)) p.y += vy;
+          p.anim += 1;
+        }
+
+        // Relámpago manual con Espacio
+        if (manualCooldown > 0) manualCooldown--;
+        if (keys['Space'] && manualCooldown <= 0) {
+          triggerLightning(true);
+          manualCooldown = 190;
+          autoFlashTimer = 220;
+        }
+
+        // Relámpago automático periódico
+        autoFlashTimer--;
+        if (autoFlashTimer <= 0) {
+          triggerLightning(true);
+          autoFlashTimer = 200 + Math.floor(Math.random() * 80);
+        }
+
+        if (flashIntensity > 0) {
+          flashIntensity = Math.max(0, flashIntensity - 0.011);
+        }
+
+        // Recolección de reliquias de Kuromi
+        for (const rel of relics) {
+          if (rel.collected) continue;
+          const rx = OFF_X + (rel.col + 0.5) * TILE;
+          const ry = OFF_Y + (rel.row + 0.5) * TILE;
+          if (Math.hypot(p.x - rx, p.y - ry) < 26) {
+            rel.collected = true;
+            collectedCount++;
+            document.getElementById('l2-relics').textContent = collectedCount;
+            Sound.playCollect();
+            flashIntensity = Math.max(flashIntensity, 0.72);
+
+            if (collectedCount === 2 && !scareTriggered) {
+              setTimeout(triggerCuteScare, 150);
+            }
+
+            if (collectedCount < 4) {
+              statusToast = `🎀 ¡Reliquia ${collectedCount}/4 encontrada! Sigue el brillo de los rayos.`;
+              toastTimer = 170;
+            } else {
+              statusToast = '✨ ¡TODAS LAS RELIQUIAS LISTAS! Ve al Portal Morado en la esquina inferior derecha.';
+              toastTimer = 280;
+              triggerLightning(false);
+            }
+          }
+        }
+
+        // Portal final (requiere las 4 reliquias)
+        const portalX = OFF_X + (portal.col + 0.5) * TILE;
+        const portalY = OFF_Y + (portal.row + 0.5) * TILE;
+        if (collectedCount === 4 && Math.hypot(p.x - portalX, p.y - portalY) < 26) {
+          l2Running = false;
+          setTimeout(() => {
+            showIntermission({
+              badge: '¡Nivel 2 Completado! ⚡',
+              emoji: '🦇🎀🎂',
+              title: '¡Mailee, Reina de la Oscuridad!',
+              quote: 'Pasaste el laberinto entre truenos y murciélagos con más glamour que susto.<br><br>Y ojo con el dato: hoy cumples <strong>16 años</strong>... oficialmente estás a solo dos pasos de la mayoría de edad (tranquila, todavía hay tiempo de sobra antes de preocuparse por cosas de adultos y dejar de ser una <strong>niña fresa VIP</strong>).<br><br>¡Prepárate! El santuario 3D de tu cumpleaños se acaba de abrir.',
+              btnText: 'Abrir mi Sorpresa 3D 🎂✨',
+              onNext: startLevel3
+            });
+          }, 300);
+        }
+
+        // ================= RENDER NIVEL 2 =================
+        ctx.fillStyle = '#090512';
+        ctx.fillRect(0, 0, W, H);
+
+        // Dibujar piso y paredes del laberinto
+        for (let r = 0; r < ROWS; r++) {
+          for (let c = 0; c < COLS; c++) {
+            const tx = OFF_X + c * TILE;
+            const ty = OFF_Y + r * TILE;
+            if (MAZE[r][c] === 1) {
+              // Muro gótico de piedra morada oscura
+              ctx.fillStyle = '#201138';
+              ctx.fillRect(tx, ty, TILE, TILE);
+              ctx.strokeStyle = '#6b21a8';
+              ctx.lineWidth = 1.5;
+              ctx.strokeRect(tx + 1, ty + 1, TILE - 2, TILE - 2);
+              // Detalle ladrillo
+              ctx.fillStyle = 'rgba(192, 132, 252, 0.08)';
+              ctx.fillRect(tx + 4, ty + 4, TILE - 8, 8);
+            } else {
+              // Piso de losas oscuras
+              ctx.fillStyle = (r + c) % 2 === 0 ? '#120a21' : '#150c26';
+              ctx.fillRect(tx, ty, TILE, TILE);
+            }
+          }
+        }
+
+        // Dibujar Reliquias de Kuromi (calaverita rosa brillante)
+        for (const rel of relics) {
+          if (rel.collected) continue;
+          const rx = OFF_X + (rel.col + 0.5) * TILE;
+          const ry = OFF_Y + (rel.row + 0.5) * TILE + Math.sin(tick * 0.1 + rel.col) * 3.5;
+
+          ctx.save();
+          ctx.shadowColor = '#f43f8e';
+          ctx.shadowBlur = 18;
+          // Lazo morado detrás
+          ctx.fillStyle = '#a855f7';
+          ctx.beginPath();
+          ctx.ellipse(rx - 9, ry - 4, 7, 4.5, -0.4, 0, Math.PI * 2);
+          ctx.ellipse(rx + 9, ry - 4, 7, 4.5, 0.4, 0, Math.PI * 2);
+          ctx.fill();
+          // Calavera rosa Kuromi
+          ctx.fillStyle = '#f43f8e';
+          ctx.beginPath();
+          ctx.arc(rx, ry, 10, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#120821';
+          ctx.beginPath();
+          ctx.arc(rx - 3.5, ry - 1, 2.2, 0, Math.PI * 2);
+          ctx.arc(rx + 3.5, ry - 1, 2.2, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillRect(rx - 3, ry + 4, 1.5, 3);
+          ctx.fillRect(rx, ry + 4, 1.5, 3);
+          ctx.fillRect(rx + 3, ry + 4, 1.5, 3);
+          ctx.restore();
+        }
+
+        // Dibujar Portal Gótico Final
+        ctx.save();
+        ctx.translate(portalX, portalY);
+        const unlocked = collectedCount === 4;
+        ctx.shadowColor = unlocked ? '#f43f8e' : '#6b21a8';
+        ctx.shadowBlur = unlocked ? 28 : 10;
+        ctx.strokeStyle = unlocked ? '#f43f8e' : '#581c87';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(0, 0, 16 + Math.sin(tick * 0.12) * 2, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = unlocked ? 'rgba(244, 63, 142, 0.45)' : 'rgba(88, 28, 135, 0.35)';
+        ctx.beginPath();
+        ctx.arc(0, 0, 13, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#fff';
+        ctx.font = '14px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(unlocked ? '🎂' : '🔒', 0, 1);
+        ctx.restore();
+
+        // Dibujar a Mailee (versión chibi compacta para laberinto)
+        drawMaileeAvatar(ctx, p.x, p.y - 4, 0.56, p.facing, p.anim, false, false);
+
+        // ================= CAPA DE OSCURIDAD + LINTERNA + RELÁMPAGO =================
+        darkCtx.clearRect(0, 0, W, H);
+        // Mientras más fuerte el rayo, más transparente se vuelve la oscuridad
+        const darkAlpha = Math.max(0.08, 0.96 - flashIntensity * 0.88);
+        darkCtx.fillStyle = `rgba(4, 2, 10, ${darkAlpha})`;
+        darkCtx.fillRect(0, 0, W, H);
+
+        // Linterna personal morada alrededor de Mailee
+        darkCtx.globalCompositeOperation = 'destination-out';
+        const lanternR = 115 + Math.sin(tick * 0.1) * 4;
+        const grad = darkCtx.createRadialGradient(p.x, p.y, 18, p.x, p.y, lanternR);
+        grad.addColorStop(0, 'rgba(0,0,0,1)');
+        grad.addColorStop(0.6, 'rgba(0,0,0,0.65)');
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        darkCtx.fillStyle = grad;
+        darkCtx.beginPath();
+        darkCtx.arc(p.x, p.y, lanternR, 0, Math.PI * 2);
+        darkCtx.fill();
+
+        // Si el portal está desbloqueado, que emita un leve halo guía en la oscuridad
+        if (unlocked) {
+          const pGrad = darkCtx.createRadialGradient(portalX, portalY, 10, portalX, portalY, 75);
+          pGrad.addColorStop(0, 'rgba(0,0,0,0.9)');
+          pGrad.addColorStop(1, 'rgba(0,0,0,0)');
+          darkCtx.fillStyle = pGrad;
+          darkCtx.beginPath();
+          darkCtx.arc(portalX, portalY, 75, 0, Math.PI * 2);
+          darkCtx.fill();
+        }
+        darkCtx.globalCompositeOperation = 'source-over';
+        ctx.drawImage(darkCanvas, 0, 0);
+
+        // Destello blanco-violeta en el pico del relámpago
+        if (flashIntensity > 0.78) {
+          ctx.fillStyle = `rgba(243, 232, 255, ${(flashIntensity - 0.78) * 1.4})`;
+          ctx.fillRect(0, 0, W, H);
+        }
+
+        // Murciélagos que cruzan volando tras el relámpago
+        for (let i = swoopBats.length - 1; i >= 0; i--) {
+          const b = swoopBats[i];
+          b.x += b.vx;
+          b.y += b.vy;
+          b.phase += 0.25;
+          drawBatSilhouette(ctx, b.x, b.y, b.size, b.phase, '#120522');
+          if (b.x < -60 || b.x > W + 60) swoopBats.splice(i, 1);
+        }
+
+        // Mensaje guía superior dentro del canvas
+        if (toastTimer > 0) {
+          toastTimer--;
+          ctx.save();
+          ctx.globalAlpha = Math.min(1, toastTimer / 35);
+          ctx.fillStyle = 'rgba(15, 8, 29, 0.88)';
+          ctx.strokeStyle = '#c084fc';
+          ctx.lineWidth = 1.5;
+          roundRect(ctx, W / 2 - 280, 12, 560, 34, 17);
+          ctx.fill();
+          ctx.stroke();
+          ctx.fillStyle = '#f5f0ff';
+          ctx.font = '600 14px Outfit, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(statusToast, W / 2, 34);
+          ctx.restore();
+        }
+
+        l2Raf = requestAnimationFrame(loop);
+      }
+
+      loop();
+    }
+
+    function stopLevel2() {
+      l2Running = false;
+      if (l2Raf) cancelAnimationFrame(l2Raf);
+    }
+
+    /* =========================================================================
+       8. NIVEL 3: PASTEL GÓTICO 3D INTERACTIVO (THREE.JS + 16 VELAS + MÚSICA)
+       ========================================================================= */
+    let threeInited = false;
+    let threeActive = false;
+    let candlesData = [];
+    let smokeParticles = [];
+    let confettiPieces = [];
+    let bats3D = [];
+    let celebrateTriggered = false;
+    let sceneRef, cameraRef, rendererRef;
+
+    function startLevel3() {
+      stopLevel1();
+      stopLevel2();
+      showScreen('level3');
+
+      if (!threeInited) {
+        initThreeCakeScene();
+        threeInited = true;
+      } else {
+        relightAllCandles();
+      }
+
+      threeActive = true;
+      // Iniciar la canción de Feliz Cumpleaños en versión cajita musical gótica
+      setTimeout(() => {
+        Sound.playHappyBirthday();
+      }, 350);
+    }
+
+    function updateCandlesHUD() {
+      const lit = candlesData.filter(c => c.lit).length;
+      document.getElementById('candles-status').textContent = `🕯️ Velas encendidas: ${lit} / 16`;
+      if (lit === 0 && !celebrateTriggered) {
+        triggerGrandCelebration();
+      }
+    }
+
+    function triggerGrandCelebration() {
+      celebrateTriggered = true;
+      document.getElementById('btn-open-card').style.display = 'inline-block';
+      Sound.playWin();
+      spawnConfetti3D();
+      setTimeout(() => {
+        Sound.playHappyBirthday();
+      }, 500);
+      setTimeout(() => {
+        document.getElementById('birthday-card-overlay').classList.add('active');
+      }, 1450);
+    }
+
+    function relightAllCandles() {
+      celebrateTriggered = false;
+      candlesData.forEach(c => {
+        c.lit = true;
+        c.flameGroup.visible = true;
+      });
+      document.getElementById('birthday-card-overlay').classList.remove('active');
+      updateCandlesHUD();
+    }
+
+    function spawnConfetti3D() {
+      if (!sceneRef) return;
+      const colors = [0xa855f7, 0xf43f8e, 0xffffff, 0x2e1065, 0xe879f9, 0xfbbf24];
+      const geo = new THREE.PlaneGeometry(0.14, 0.24);
+      for (let i = 0; i < 140; i++) {
+        const mat = new THREE.MeshBasicMaterial({
+          color: colors[i % colors.length],
+          side: THREE.DoubleSide
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.set(
+          (Math.random() - 0.5) * 9,
+          4.5 + Math.random() * 5,
+          (Math.random() - 0.5) * 9
+        );
+        mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 6);
+        sceneRef.add(mesh);
+        confettiPieces.push({
+          mesh,
+          vy: -0.025 - Math.random() * 0.035,
+          vx: (Math.random() - 0.5) * 0.02,
+          vz: (Math.random() - 0.5) * 0.02,
+          rx: (Math.random() - 0.5) * 0.14,
+          ry: (Math.random() - 0.5) * 0.14
+        });
+      }
+    }
+
+    function spawnCandleSmoke(pos) {
+      if (!sceneRef) return;
+      for (let i = 0; i < 8; i++) {
+        const geo = new THREE.SphereGeometry(0.045 + Math.random() * 0.035, 8, 8);
+        const mat = new THREE.MeshBasicMaterial({
+          color: 0xd8b4fe,
+          transparent: true,
+          opacity: 0.65
+        });
+        const s = new THREE.Mesh(geo, mat);
+        s.position.copy(pos);
+        s.position.x += (Math.random() - 0.5) * 0.06;
+        s.position.z += (Math.random() - 0.5) * 0.06;
+        sceneRef.add(s);
+        smokeParticles.push({
+          mesh: s,
+          vy: 0.015 + Math.random() * 0.014,
+          vx: (Math.random() - 0.5) * 0.008,
+          life: 1.0
+        });
+      }
+    }
+
+    function initThreeCakeScene() {
+      const container = document.getElementById('three-container');
+      const width = container.clientWidth || window.innerWidth;
+      const height = container.clientHeight || (window.innerHeight - 58);
+
+      const scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x090414, 0.048);
+      sceneRef = scene;
+
+      const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
+      cameraRef = camera;
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+      rendererRef = renderer;
+
+      // Luces góticas dramáticas y cálidas
+      const ambient = new THREE.AmbientLight(0x8b5cf6, 0.58);
+      scene.add(ambient);
+
+      const moonLight = new THREE.DirectionalLight(0xe9d5ff, 0.95);
+      moonLight.position.set(5, 10, 6);
+      moonLight.castShadow = true;
+      scene.add(moonLight);
+
+      const pinkRim = new THREE.PointLight(0xf43f8e, 1.35, 16);
+      pinkRim.position.set(-4.5, 4.2, -3.5);
+      scene.add(pinkRim);
+
+      const purpleRim = new THREE.PointLight(0xa855f7, 1.4, 16);
+      purpleRim.position.set(4.5, 2.5, -4);
+      scene.add(purpleRim);
+
+      // Luz cálida central de las velas (se atenúa al ir soplándolas)
+      const candleWarmLight = new THREE.PointLight(0xffb74d, 1.8, 12);
+      candleWarmLight.position.set(0, 3.6, 0);
+      scene.add(candleWarmLight);
+
+      // ================= PEDESTAL Y PASTEL GÓTICO =================
+      const cakeGroup = new THREE.Group();
+      scene.add(cakeGroup);
+
+      // Materiales
+      const blackVelvetMat = new THREE.MeshStandardMaterial({ color: 0x150d20, roughness: 0.62, metalness: 0.15 });
+      const deepPurpleMat = new THREE.MeshStandardMaterial({ color: 0x4c1d95, roughness: 0.45, metalness: 0.22 });
+      const glossyPurpleDripMat = new THREE.MeshStandardMaterial({ color: 0x9333ea, roughness: 0.15, metalness: 0.35 });
+      const glossyPinkMat = new THREE.MeshStandardMaterial({ color: 0xf43f8e, roughness: 0.2, metalness: 0.25, emissive: 0x500724, emissiveIntensity: 0.35 });
+      const silverPearlMat = new THREE.MeshStandardMaterial({ color: 0xe9d5ff, roughness: 0.18, metalness: 0.78 });
+      const standMat = new THREE.MeshStandardMaterial({ color: 0x1e1330, roughness: 0.25, metalness: 0.65 });
+
+      // Base / Pedestal gótico
+      const plate = new THREE.Mesh(new THREE.CylinderGeometry(2.85, 2.6, 0.24, 48), standMat);
+      plate.position.y = -0.12;
+      plate.receiveShadow = true;
+      cakeGroup.add(plate);
+
+      const neonRing = new THREE.Mesh(
+        new THREE.TorusGeometry(2.84, 0.045, 12, 64),
+        new THREE.MeshBasicMaterial({ color: 0xc084fc })
+      );
+      neonRing.rotation.x = Math.PI / 2;
+      neonRing.position.y = -0.02;
+      cakeGroup.add(neonRing);
+
+      const pedestalStem = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 1.25, 1.3, 32), standMat);
+      pedestalStem.position.y = -0.85;
+      cakeGroup.add(pedestalStem);
+
+      // PISO 1 (Base grande negro terciopelo)
+      const tier1R = 2.25, tier1H = 1.28;
+      const tier1 = new THREE.Mesh(new THREE.CylinderGeometry(tier1R, tier1R, tier1H, 48), blackVelvetMat);
+      tier1.position.y = tier1H / 2;
+      tier1.castShadow = true;
+      tier1.receiveShadow = true;
+      cakeGroup.add(tier1);
+
+      // Perlas plateadas/lavanda alrededor de la base del Piso 1
+      const pearlGeo = new THREE.SphereGeometry(0.085, 12, 12);
+      for (let i = 0; i < 36; i++) {
+        const a = (i / 36) * Math.PI * 2;
+        const pMesh = new THREE.Mesh(pearlGeo, i % 2 === 0 ? silverPearlMat : glossyPinkMat);
+        pMesh.position.set(Math.cos(a) * (tier1R + 0.04), 0.08, Math.sin(a) * (tier1R + 0.04));
+        cakeGroup.add(pMesh);
+      }
+
+      // Glaseado morado brillante + goteos (drips) en Piso 1
+      const dripTop1 = new THREE.Mesh(new THREE.CylinderGeometry(tier1R + 0.03, tier1R + 0.03, 0.09, 48), glossyPurpleDripMat);
+      dripTop1.position.y = tier1H - 0.02;
+      cakeGroup.add(dripTop1);
+
+      for (let i = 0; i < 28; i++) {
+        const a = (i / 28) * Math.PI * 2;
+        const len = 0.25 + ((i * 37) % 10) * 0.055;
+        const drip = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.05, len, 10), glossyPurpleDripMat);
+        drip.position.set(Math.cos(a) * (tier1R + 0.01), tier1H - len / 2, Math.sin(a) * (tier1R + 0.01));
+        cakeGroup.add(drip);
+        const dropTip = new THREE.Mesh(new THREE.SphereGeometry(0.055, 10, 10), glossyPurpleDripMat);
+        dropTip.position.set(Math.cos(a) * (tier1R + 0.01), tier1H - len, Math.sin(a) * (tier1R + 0.01));
+        cakeGroup.add(dropTip);
+      }
+
+      // PISO 2 (Morado gótico real)
+      const tier2R = 1.52, tier2H = 1.05;
+      const tier2BaseY = tier1H;
+      const tier2 = new THREE.Mesh(new THREE.CylinderGeometry(tier2R, tier2R, tier2H, 48), deepPurpleMat);
+      tier2.position.y = tier2BaseY + tier2H / 2;
+      tier2.castShadow = true;
+      tier2.receiveShadow = true;
+      cakeGroup.add(tier2);
+
+      // Perlas negras/rosas en base de Piso 2
+      for (let i = 0; i < 26; i++) {
+        const a = (i / 26) * Math.PI * 2;
+        const pMesh = new THREE.Mesh(new THREE.SphereGeometry(0.075, 10, 10), i % 3 === 0 ? glossyPinkMat : blackVelvetMat);
+        pMesh.position.set(Math.cos(a) * (tier2R + 0.04), tier2BaseY + 0.07, Math.sin(a) * (tier2R + 0.04));
+        cakeGroup.add(pMesh);
+      }
+
+      // Glaseado rosa Kuromi en Piso 2
+      const dripTop2 = new THREE.Mesh(new THREE.CylinderGeometry(tier2R + 0.03, tier2R + 0.03, 0.08, 48), glossyPinkMat);
+      dripTop2.position.y = tier2BaseY + tier2H - 0.02;
+      cakeGroup.add(dripTop2);
+
+      for (let i = 0; i < 20; i++) {
+        const a = (i / 20) * Math.PI * 2;
+        const len = 0.2 + ((i * 23) % 8) * 0.045;
+        const drip = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.04, len, 8), glossyPinkMat);
+        drip.position.set(Math.cos(a) * (tier2R + 0.01), tier2BaseY + tier2H - len / 2, Math.sin(a) * (tier2R + 0.01));
+        cakeGroup.add(drip);
+      }
+
+      // Medallón frontal estilo calaverita rosa Kuromi en el Piso 2
+      const skullGroup = new THREE.Group();
+      skullGroup.position.set(0, tier2BaseY + 0.52, tier2R + 0.03);
+      const skullHead = new THREE.Mesh(new THREE.SphereGeometry(0.24, 16, 16), glossyPinkMat);
+      skullHead.scale.set(1.12, 0.92, 0.45);
+      skullGroup.add(skullHead);
+      const eyeMat = new THREE.MeshBasicMaterial({ color: 0x0d0618 });
+      const leftEye = new THREE.Mesh(new THREE.SphereGeometry(0.05, 10, 10), eyeMat);
+      leftEye.position.set(-0.085, 0.02, 0.09);
+      const rightEye = new THREE.Mesh(new THREE.SphereGeometry(0.05, 10, 10), eyeMat);
+      rightEye.position.set(0.085, 0.02, 0.09);
+      skullGroup.add(leftEye, rightEye);
+      cakeGroup.add(skullGroup);
+
+      // PISO 3 (Corona superior negra terciopelo)
+      const tier3R = 0.88, tier3H = 0.68;
+      const tier3BaseY = tier2BaseY + tier2H;
+      const tier3 = new THREE.Mesh(new THREE.CylinderGeometry(tier3R, tier3R, tier3H, 40), blackVelvetMat);
+      tier3.position.y = tier3BaseY + tier3H / 2;
+      cakeGroup.add(tier3);
+
+      const topY = tier3BaseY + tier3H;
+
+      // OREJITAS DE BUFÓN ESTILO KUROMI EN LA CIMA DEL PASTEL
+      function createKuromiEar(side) {
+        const earGrp = new THREE.Group();
+        const cone = new THREE.Mesh(new THREE.ConeGeometry(0.26, 0.92, 16), blackVelvetMat);
+        cone.position.y = 0.44;
+        earGrp.add(cone);
+        const pompom = new THREE.Mesh(new THREE.SphereGeometry(0.14, 16, 16), glossyPinkMat);
+        pompom.position.y = 0.92;
+        earGrp.add(pompom);
+        earGrp.position.set(side * 0.44, topY - 0.04, -0.15);
+        earGrp.rotation.z = -side * 0.52;
+        earGrp.rotation.x = -0.12;
+        return earGrp;
+      }
+      cakeGroup.add(createKuromiEar(-1));
+      cakeGroup.add(createKuromiEar(1));
+
+      // LETRERO BRILLANTE "16" + "MAILEE" EN LA CIMA
+      const topperCanvas = document.createElement('canvas');
+      topperCanvas.width = 512;
+      topperCanvas.height = 256;
+      const tCtx = topperCanvas.getContext('2d');
+      tCtx.clearRect(0, 0, 512, 256);
+      tCtx.shadowColor = '#f43f8e';
+      tCtx.shadowBlur = 24;
+      tCtx.fillStyle = '#ffffff';
+      tCtx.font = 'bold 148px "Cinzel Decorative", serif';
+      tCtx.textAlign = 'center';
+      tCtx.fillText('16', 256, 155);
+      tCtx.shadowColor = '#c084fc';
+      tCtx.shadowBlur = 16;
+      tCtx.fillStyle = '#f9a8d4';
+      tCtx.font = 'bold 54px Fredoka, sans-serif';
+      tCtx.fillText('MAILEE', 256, 224);
+
+      const topperTex = new THREE.CanvasTexture(topperCanvas);
+      const topperMat = new THREE.MeshBasicMaterial({ map: topperTex, transparent: true, side: THREE.DoubleSide });
+      const topperSign = new THREE.Mesh(new THREE.PlaneGeometry(1.45, 0.72), topperMat);
+      topperSign.position.set(0, topY + 0.58, 0.16);
+      cakeGroup.add(topperSign);
+
+      // ================= EXACTAMENTE 16 VELAS INTERACTIVAS =================
+      candlesData = [];
+      const clickableCandleMeshes = [];
+
+      function addCandle(x, y, z, idx) {
+        const cGroup = new THREE.Group();
+        cGroup.position.set(x, y, z);
+
+        const bodyColor = idx % 2 === 0 ? 0xf43f8e : 0xa855f7;
+        const waxMat = new THREE.MeshStandardMaterial({
+          color: bodyColor,
+          roughness: 0.3,
+          emissive: bodyColor,
+          emissiveIntensity: 0.15
+        });
+        const candleH = 0.52;
+        const wax = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, candleH, 12), waxMat);
+        wax.position.y = candleH / 2;
+        wax.userData.candleIndex = idx;
+        cGroup.add(wax);
+        clickableCandleMeshes.push(wax);
+
+        // Mecha
+        const wick = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.01, 0.01, 0.08, 6),
+          new THREE.MeshBasicMaterial({ color: 0x111111 })
+        );
+        wick.position.y = candleH + 0.04;
+        cGroup.add(wick);
+
+        // Llama 3D animada (externa + núcleo brillante + hitbox generoso para clic fácil)
+        const flameGroup = new THREE.Group();
+        flameGroup.position.y = candleH + 0.15;
+
+        const outerFlame = new THREE.Mesh(
+          new THREE.ConeGeometry(0.068, 0.22, 12),
+          new THREE.MeshBasicMaterial({ color: 0xff8c00, transparent: true, opacity: 0.9 })
+        );
+        outerFlame.position.y = 0.04;
+        flameGroup.add(outerFlame);
+
+        const innerFlame = new THREE.Mesh(
+          new THREE.SphereGeometry(0.045, 10, 10),
+          new THREE.MeshBasicMaterial({ color: 0xfff7cc })
+        );
+        flameGroup.add(innerFlame);
+
+        // Hitbox invisible más grande alrededor de la llama para hacer clic cómodamente
+        const hitSphere = new THREE.Mesh(
+          new THREE.SphereGeometry(0.18, 8, 8),
+          new THREE.MeshBasicMaterial({ visible: false })
+        );
+        hitSphere.userData.candleIndex = idx;
+        flameGroup.add(hitSphere);
+        clickableCandleMeshes.push(hitSphere);
+
+        cGroup.add(flameGroup);
+        cakeGroup.add(cGroup);
+
+        candlesData.push({
+          idx,
+          lit: true,
+          group: cGroup,
+          flameGroup,
+          phase: Math.random() * Math.PI * 2
+        });
+      }
+
+      // 10 velas en el borde del Piso 1 + 6 velas en el borde del Piso 2 = 16 VELAS EXACTAS
+      for (let i = 0; i < 10; i++) {
+        const angle = (i / 10) * Math.PI * 2 + 0.15;
+        addCandle(Math.cos(angle) * 1.9, tier1H, Math.sin(angle) * 1.9, i);
+      }
+      for (let i = 0; i < 6; i++) {
+        const angle = (i / 6) * Math.PI * 2 + 0.5;
+        addCandle(Math.cos(angle) * 1.2, tier2BaseY + tier2H, Math.sin(angle) * 1.2, 10 + i);
+      }
+      updateCandlesHUD();
+
+      // ================= ESTRELLAS GÓTICAS Y MURCIÉLAGOS 3D =================
+      const starGeo = new THREE.BufferGeometry();
+      const starPos = [];
+      for (let i = 0; i < 360; i++) {
+        starPos.push(
+          (Math.random() - 0.5) * 28,
+          Math.random() * 14 - 1,
+          (Math.random() - 0.5) * 28
+        );
+      }
+      starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
+      const starMat = new THREE.PointsMaterial({ color: 0xe9d5ff, size: 0.08, transparent: true, opacity: 0.78 });
+      const stars = new THREE.Points(starGeo, starMat);
+      scene.add(stars);
+
+      // 6 Murciélagos low-poly 3D volando alrededor del pastel
+      const batMat = new THREE.MeshStandardMaterial({ color: 0x1a0b2e, roughness: 0.5, side: THREE.DoubleSide });
+      const batWingGeo = new THREE.PlaneGeometry(0.42, 0.2);
+      for (let i = 0; i < 6; i++) {
+        const bGrp = new THREE.Group();
+        const body = new THREE.Mesh(new THREE.SphereGeometry(0.08, 8, 8), batMat);
+        const wingL = new THREE.Mesh(batWingGeo, batMat);
+        wingL.position.x = -0.22;
+        const wingR = new THREE.Mesh(batWingGeo, batMat);
+        wingR.position.x = 0.22;
+        bGrp.add(body, wingL, wingR);
+        scene.add(bGrp);
+        bats3D.push({
+          group: bGrp, wingL, wingR,
+          radius: 3.6 + (i % 3) * 0.9,
+          height: 3.1 + (i % 2) * 1.1,
+          angle: (i / 6) * Math.PI * 2,
+          speed: 0.008 + (i % 3) * 0.003,
+          flapPhase: i * 1.4
+        });
+      }
+
+      // ================= CONTROLES DE ÓRBITA SUAVES + RAYCASTER PARA VELAS =================
+      let yaw = 0.0;
+      let pitch = 0.36;
+      let distance = 7.4;
+      let isDragging = false;
+      let dragMoved = false;
+      let lastX = 0, lastY = 0;
+
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+
+      renderer.domElement.addEventListener('pointerdown', (e) => {
+        isDragging = true;
+        dragMoved = false;
+        lastX = e.clientX;
+        lastY = e.clientY;
+      });
+
+      window.addEventListener('pointermove', (e) => {
+        if (!threeActive) return;
+        if (isDragging) {
+          const dx = e.clientX - lastX;
+          const dy = e.clientY - lastY;
+          if (Math.abs(dx) > 3 || Math.abs(dy) > 3) dragMoved = true;
+          yaw -= dx * 0.008;
+          pitch = Math.max(0.08, Math.min(1.15, pitch + dy * 0.006));
+          lastX = e.clientX;
+          lastY = e.clientY;
+        } else {
+          // Cambiar cursor al pasar sobre una vela encendida
+          const rect = renderer.domElement.getBoundingClientRect();
+          mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+          mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+          raycaster.setFromCamera(mouse, camera);
+          const hits = raycaster.intersectObjects(clickableCandleMeshes);
+          const overLit = hits.some(h => {
+            const c = candlesData[h.object.userData.candleIndex];
+            return c && c.lit;
+          });
+          renderer.domElement.style.cursor = overLit ? 'pointer' : 'grab';
+        }
+      });
+
+      window.addEventListener('pointerup', (e) => {
+        if (!threeActive || !isDragging) return;
+        isDragging = false;
+        if (!dragMoved) {
+          const rect = renderer.domElement.getBoundingClientRect();
+          mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+          mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+          raycaster.setFromCamera(mouse, camera);
+          const hits = raycaster.intersectObjects(clickableCandleMeshes);
+          if (hits.length > 0) {
+            const idx = hits[0].object.userData.candleIndex;
+            const candle = candlesData[idx];
+            if (candle && candle.lit) {
+              candle.lit = false;
+              candle.flameGroup.visible = false;
+              Sound.playBlowCandle();
+              const worldPos = new THREE.Vector3();
+              candle.flameGroup.getWorldPosition(worldPos);
+              spawnCandleSmoke(worldPos);
+              updateCandlesHUD();
+            }
+          }
+        }
+      });
+
+      renderer.domElement.addEventListener('wheel', (e) => {
+        if (!threeActive) return;
+        e.preventDefault();
+        distance = Math.max(4.5, Math.min(11.5, distance + e.deltaY * 0.004));
+      }, { passive: false });
+
+      window.addEventListener('resize', () => {
+        if (!rendererRef || !cameraRef) return;
+        const w = container.clientWidth || window.innerWidth;
+        const h = container.clientHeight || (window.innerHeight - 58);
+        cameraRef.aspect = w / h;
+        cameraRef.updateProjectionMatrix();
+        rendererRef.setSize(w, h);
+      });
+
+      // ================= LOOP DE ANIMACIÓN 3D =================
+      let clockTick = 0;
+      function animate3D() {
+        requestAnimationFrame(animate3D);
+        if (!threeActive || isBlockedMobile) return;
+
+        clockTick += 0.04;
+        if (!isDragging) yaw += 0.0038;
+
+        camera.position.x = Math.sin(yaw) * Math.cos(pitch) * distance;
+        camera.position.y = 1.65 + Math.sin(pitch) * distance;
+        camera.position.z = Math.cos(yaw) * Math.cos(pitch) * distance;
+        camera.lookAt(0, 1.55, 0);
+
+        // Animar llamas de velas encendidas
+        let litCount = 0;
+        for (const c of candlesData) {
+          if (!c.lit) continue;
+          litCount++;
+          const flicker = 1 + Math.sin(clockTick * 5 + c.phase) * 0.14;
+          c.flameGroup.scale.set(1, flicker, 1);
+          c.flameGroup.rotation.z = Math.sin(clockTick * 3.5 + c.phase) * 0.12;
+        }
+        candleWarmLight.intensity = (litCount / 16) * 2.0 + Math.sin(clockTick * 6) * 0.12;
+
+        // Humo subiendo al soplar velas
+        for (let i = smokeParticles.length - 1; i >= 0; i--) {
+          const sp = smokeParticles[i];
+          sp.mesh.position.y += sp.vy;
+          sp.mesh.position.x += sp.vx;
+          sp.mesh.scale.multiplyScalar(1.022);
+          sp.life -= 0.018;
+          sp.mesh.material.opacity = Math.max(0, sp.life * 0.65);
+          if (sp.life <= 0) {
+            scene.remove(sp.mesh);
+            smokeParticles.splice(i, 1);
+          }
+        }
+
+        // Confeti 3D celebratorio
+        for (let i = confettiPieces.length - 1; i >= 0; i--) {
+          const cf = confettiPieces[i];
+          cf.mesh.position.y += cf.vy;
+          cf.mesh.position.x += cf.vx;
+          cf.mesh.position.z += cf.vz;
+          cf.mesh.rotation.x += cf.rx;
+          cf.mesh.rotation.y += cf.ry;
+          if (cf.mesh.position.y < -1.8) {
+            cf.mesh.position.y = 6.5 + Math.random() * 2;
+          }
+        }
+
+        // Murciélagos 3D orbitando
+        for (const b of bats3D) {
+          b.angle += b.speed;
+          b.flapPhase += 0.24;
+          b.group.position.set(
+            Math.cos(b.angle) * b.radius,
+            b.height + Math.sin(b.flapPhase * 0.4) * 0.25,
+            Math.sin(b.angle) * b.radius
+          );
+          b.group.lookAt(
+            Math.cos(b.angle + 0.1) * b.radius,
+            b.height,
+            Math.sin(b.angle + 0.1) * b.radius
+          );
+          const flap = Math.sin(b.flapPhase) * 0.65;
+          b.wingL.rotation.z = flap;
+          b.wingR.rotation.z = -flap;
+        }
+
+        stars.rotation.y += 0.0008;
+        renderer.render(scene, camera);
+      }
+
+      animate3D();
+    }
+
+    /* =========================================================================
+       9. BOTONES DEL NIVEL 3 Y TARJETA FINAL
+       ========================================================================= */
+    document.getElementById('btn-blow-all').addEventListener('click', () => {
+      const litCandles = candlesData.filter(c => c.lit);
+      if (litCandles.length === 0) {
+        document.getElementById('birthday-card-overlay').classList.add('active');
+        return;
+      }
+      litCandles.forEach((candle, i) => {
+        setTimeout(() => {
+          if (!candle.lit) return;
+          candle.lit = false;
+          candle.flameGroup.visible = false;
+          if (i % 3 === 0) Sound.playBlowCandle();
+          const worldPos = new THREE.Vector3();
+          candle.flameGroup.getWorldPosition(worldPos);
+          spawnCandleSmoke(worldPos);
+          updateCandlesHUD();
+        }, i * 65);
+      });
+    });
+
+    document.getElementById('btn-replay-song').addEventListener('click', () => {
+      Sound.playHappyBirthday();
+    });
+
+    document.getElementById('btn-open-card').addEventListener('click', () => {
+      Sound.playClick();
+      document.getElementById('birthday-card-overlay').classList.add('active');
+    });
+
+    document.getElementById('btn-close-card').addEventListener('click', () => {
+      Sound.playClick();
+      document.getElementById('birthday-card-overlay').classList.remove('active');
+    });
+
+    document.getElementById('btn-view-cake-again').addEventListener('click', () => {
+      Sound.playClick();
+      document.getElementById('birthday-card-overlay').classList.remove('active');
+    });
+
+    document.getElementById('btn-relight-candles').addEventListener('click', () => {
+      Sound.playClick();
+      relightAllCandles();
+    });
+
+    document.getElementById('btn-restart-all').addEventListener('click', () => {
+      Sound.playClick();
+      Sound.stopSong();
+      threeActive = false;
+      document.getElementById('birthday-card-overlay').classList.remove('active');
+      showScreen('lobby');
+    });
+  </script>
+</body>
+</html>
